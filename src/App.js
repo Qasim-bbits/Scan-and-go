@@ -1,10 +1,11 @@
 import React from 'react'
 import { Routes, Route, Navigate  } from 'react-router-dom'
 import './App.css'
-import MenuBar from './layout/MenuBar'
-import Dashboard from './pages/Admin/Dashboard/Dashboard'
-import Products from './pages/Admin/Products/Products'
-import router from './routePaths/routePaths'
+import {router} from './Routes/routhPaths';
+import LoginView from "./Screens/Login/login.view";
+import SignUpView from './Screens/SignUp/signUp.view';
+import {Layout} from "./Components/SidebarHeaderWrapper";
+import MainView from "./Screens/Main/main.view";
 
 const App = () => {
   // const PrivateRoute = ({ children}) => {
@@ -18,16 +19,15 @@ const App = () => {
   //   return <Navigate to={router.admin} />
   // }
   function MissingRoute() {
-    return < Navigate to={{pathname: router.dashboard}} />
+    return < Navigate to={{pathname: router.main}} />
   }
 
   return (
     <Routes>
-      <Route path="/" element={<MenuBar />} >
-        <Route exact path={router.dashboard} element={<Dashboard/>}/>
-        <Route exact path={router.products} element={<Products/>}/>
-      </Route>
-      <Route path="*" element={<MissingRoute/>} />
+        <Route exact path={router.login} element={<LoginView/>}/>
+        <Route exact path={router.signUp} element={<SignUpView/>}/>
+        <Route exact path={router.main} element={<MainView/>}/>
+        <Route path="*" element={<MissingRoute/>} />
     </Routes>
   );
 }
