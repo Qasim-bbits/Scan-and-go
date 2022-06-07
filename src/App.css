@@ -1,5 +1,9 @@
-.App {
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300;400;600&display=swap');
+
+App {
   text-align: center;
+  height: 100%;
+  width: 100%;
 }
 
 .App-logo {
