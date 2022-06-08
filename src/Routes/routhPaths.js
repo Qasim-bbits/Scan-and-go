@@ -1,3 +1,8 @@
+import ReceiptIcon from '@mui/icons-material/Receipt';
+import LocalAtmIcon from '@mui/icons-material/LocalAtm';
+import ManageSearchIcon from '@mui/icons-material/ManageSearch';
+import ArticleIcon from '@mui/icons-material/Article';
+
 export const router = {
   login: '/',
   signUp: 'signup',
@@ -12,6 +17,7 @@ export const adminRoutes = [
     parent: {
       title: 'Main',
       path: router.main,
+      icon: <ArticleIcon />
     },
     child: []
   },
@@ -19,6 +25,7 @@ export const adminRoutes = [
     parent: {
       title: 'Pay for Parking',
       path: router.payForParking,
+      icon: <ReceiptIcon />
     },
     child: []
   },
@@ -26,6 +33,7 @@ export const adminRoutes = [
     parent: {
       title: 'Pay an Infraction',
       path: router.payAnInfraction,
+      icon: <LocalAtmIcon />
     },
     child: []
   },
@@ -33,6 +41,7 @@ export const adminRoutes = [
     parent: {
       title: 'History',
       path: router.history,
+      icon: <ManageSearchIcon />
     },
     child: []
   },
