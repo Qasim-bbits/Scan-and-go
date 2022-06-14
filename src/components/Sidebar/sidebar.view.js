@@ -46,6 +46,7 @@ export const SidebarView = (props) => {
                 {color: '#14a7e0', textDecoration: 'none'} : {color: '#2c3680', textDecoration: 'none'})}
             >
               <ListItemButton>
+                  {route.parent.icon} &nbsp;
                   <ListItemText primary={route.parent.title}/>
               </ListItemButton>
             </NavLink>
