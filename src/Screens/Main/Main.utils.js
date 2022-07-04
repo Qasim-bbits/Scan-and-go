@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { Drawer } from '@mui/material';
 import moment from 'moment';
 import AddPlateForm from './addPlateForm';
-import MainView from './Main.view';
+import MainView from './main.view';
 import ParkingRateForm from './parkingRateForm';
 import SelectPlateForm from './selectPlateForm';
 import {Elements} from '@stripe/react-stripe-js';
@@ -155,7 +155,7 @@ export default function MainUtils() {
   }
 
   const confirmZone=(e)=>{
-    setDrawerComponent(0);
+    setDrawerComponent(2);
     toggleDrawer();
     console.log(tarif)
   }

@@ -1,8 +1,10 @@
 import React from 'react';
 import Box from "@mui/material/Box";
-import {Button, IconButton, Typography, Paper, useMediaQuery} from "@mui/material";
+import {Button, IconButton, Typography, Paper, useMediaQuery, ListItem, Divider} from "@mui/material";
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function SelectPlateForm(props) {
   const {
@@ -57,37 +59,32 @@ function SelectPlateForm(props) {
           Select Plate
         </Typography>
       </Box>
-      <Box sx={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', marginTop: '10%', padding: '0 1% 0 1%'}}>
+      <Box sx={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' ,marginTop: '10%', padding: '0 1% 0 1%'}}>
         {listOfCars.map((car) => (
-          <Paper elevation={1} sx={{display: 'flex', height: 120, width: '100%'}}>
-            <Box>
+          <Paper elevation={1} sx={{display: 'flex', height: 120, width: '80%', backgroundColor:'#f0f2f5', marginBottom: '5px'}}>
+            <ListItem>
+              <Box sx={{display: 'flex', flexDirection: 'column', borderRight: '1px solid black'}}>
               <IconButton
                 color="primary"
                 edge="start"
               >
-                <DirectionsCarIcon />
+                <EditIcon />
               </IconButton>
-            </Box>
-            <Box>
+                <Divider
+                  variant='fullWidth'
+                  sx={{width: '100%', backgroundColor: 'black'}}
+                />
               <IconButton
                 color="primary"
                 edge="start"
               >
-                <DirectionsCarIcon />
+                <DeleteIcon />
               </IconButton>
-            </Box>
-            <Box>
-              <Button 
-                variant='contained' 
-                style={parkingRateButton} 
-                fullWidth 
-                sx={{justifyContent: 'flex-start'}}
-                onClick={()=>props.onPlateSelect(car.numberPlate)}>
-                <Typography>
+              </Box>
+                <Typography variant='h4' sx={{marginLeft: '10%'}}>
                   {car.numberPlate}
                 </Typography>
-              </Button>
-            </Box>
+            </ListItem>
           </Paper>
         ))}
       </Box>

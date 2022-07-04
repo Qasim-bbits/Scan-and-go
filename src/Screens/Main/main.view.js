@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Layout} from "../../components/SidebarHeaderWrapper";
+import {Layout} from "../../Components/SidebarHeaderWrapper";
 import { GoogleMap, LoadScript, Polygon } from '@react-google-maps/api';
 import {countries} from "../Auth/SignUp/signUp.utils";
 import {Autocomplete, Box, Button, Drawer, TextField, useMediaQuery} from "@mui/material";
