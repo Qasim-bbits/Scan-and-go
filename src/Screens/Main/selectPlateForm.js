@@ -1,6 +1,6 @@
 import React from 'react';
 import Box from "@mui/material/Box";
-import {Button, IconButton, Typography, useMediaQuery} from "@mui/material";
+import {Button, IconButton, Typography, Paper, useMediaQuery} from "@mui/material";
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
@@ -59,7 +59,7 @@ function SelectPlateForm(props) {
       </Box>
       <Box sx={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', marginTop: '10%', padding: '0 1% 0 1%'}}>
         {listOfCars.map((car) => (
-          <Box sx={{display: 'flex', height: 120, width: '100%'}}>
+          <Paper elevation={1} sx={{display: 'flex', height: 120, width: '100%'}}>
             <Box>
               <IconButton
                 color="primary"
@@ -77,13 +77,18 @@ function SelectPlateForm(props) {
               </IconButton>
             </Box>
             <Box>
-              <Button variant='contained' style={parkingRateButton} fullWidth sx={{justifyContent: 'flex-start'}}>
+              <Button 
+                variant='contained' 
+                style={parkingRateButton} 
+                fullWidth 
+                sx={{justifyContent: 'flex-start'}}
+                onClick={()=>props.onPlateSelect(car.numberPlate)}>
                 <Typography>
                   {car.numberPlate}
                 </Typography>
               </Button>
             </Box>
-          </Box>
+          </Paper>
         ))}
       </Box>
     </Box>

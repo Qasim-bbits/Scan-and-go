@@ -2,10 +2,11 @@ import React from 'react'
 import { Routes, Route, Navigate  } from 'react-router-dom'
 import './App.css'
 import {router} from './Routes/routhPaths';
-import LoginView from "./Screens/Login/login.view";
-import SignUpView from './Screens/SignUp/signUp.view';
-import {Layout} from "./Components/SidebarHeaderWrapper";
-import MainView from "./Screens/Main/main.view";
+import {Layout} from "./components/SidebarHeaderWrapper";
+import LoginUtils from './Screens/Auth/Login/login.utils';
+import MainUtils from './Screens/Main/Main.utils';
+import SignupUtils from './Screens/Auth/SignUp/signUp.utils';
+import VerifyUtils from './Screens/Auth/Verify/verify.utils';
 
 const App = () => {
   // const PrivateRoute = ({ children}) => {
@@ -24,10 +25,11 @@ const App = () => {
 
   return (
     <Routes>
-        <Route exact path={router.login} element={<LoginView/>}/>
-        <Route exact path={router.signUp} element={<SignUpView/>}/>
-        <Route exact path={router.main} element={<MainView/>}/>
-        <Route path="*" element={<MissingRoute/>} />
+        <Route exact path={router.login} element={<LoginUtils/>}/>
+        <Route exact path={router.signUp} element={<SignupUtils/>}/>
+        <Route exact path={router.verify+'/:token'} element={<VerifyUtils/>}/>
+        <Route exact path={router.main} element={<MainUtils/>}/>
+        {/* <Route path="*" element={<MissingRoute/>} /> */}
     </Routes>
   );
 }

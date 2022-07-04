@@ -5,7 +5,8 @@ import ArticleIcon from '@mui/icons-material/Article';
 
 export const router = {
   login: '/',
-  signUp: 'signup',
+  signUp: '/signup',
+  verify: '/verify',
   main: '/main',
   payForParking: '/ParkingPayment',
   payAnInfraction: '/InfractionPayment',

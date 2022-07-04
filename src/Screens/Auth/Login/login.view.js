@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import {
   Avatar,
   Box,
@@ -13,27 +13,13 @@ import {
   Select,
   TextField,
   Typography,
-  Link,
 } from "@mui/material";
-import Logo from "../../Assets/Images/Logos/Logo.svg";
-import Alert from "../../Common/Alerts";
-import ResponsiveCard from "../ResponsiveCard";
+import Logo from "../../../assets/images/Logos/Logo.svg";
+import Alert from "../../../Common/Alerts";
+import ResponsiveCard from "../../ResponsiveCard";
+import { router } from '../../../Routes/routhPaths';
 
-function LoginView() {
-
-  const navigate = useNavigate();
-  const [showSpinner, setShowSpinner] = useState(false);
-  const [alertMessage, setAlertMessage] = useState('');
-  const [alertTitle, setAlertTitle] = useState('');
-  const [showAlert, setShowAlert] = useState(false);
-  const [severity, setSeverity] = useState('');
-
-  const handleWrongCredentials = () => {
-    setAlertMessage('Invalid username or password');
-    setAlertTitle('Login Error')
-    setShowAlert(true);
-    setSeverity('error');
-  }
+function LoginView(props) {
 
   const btnstyle={margin:'8% 0', width: '100%', borderRadius: 20, backgroundColor: '#2c3680'}
 
@@ -50,25 +36,24 @@ function LoginView() {
               id="demo-simple-select-standard"
               label="Language"
             >
-              <MenuItem value={'english'}>English</MenuItem>
-              <MenuItem value={'français'}>Français</MenuItem>
+              <MenuItem value={'en'}>English</MenuItem>
+              <MenuItem value={'fr'}>Français</MenuItem>
             </Select>
           </FormControl>
         </Box>
         <ResponsiveCard>
-        <Alert
+        {/* <Alert
           showAlert={showAlert}
           severity={severity}
           alertMessage={alertMessage}
           closeAlert={()=>setShowAlert(false)}
-        />
+        /> */}
         <Grid align='center'>
           <Avatar src={Logo} sx={{ width: '60%', height: '70%', marginTop: '10%' }} variant='square' />
         </Grid>
-        <form>
+        <form onSubmit={props.handleSubmit}>
           <Box
             sx={{'& .MuiTextField-root': { m: 1, width: '35ch' }, display: 'flex', flexDirection: 'column', alignItems: 'center'}}
-            component="form"
             noValidate
             autoComplete="off"
           >
@@ -77,13 +62,22 @@ function LoginView() {
                   label="Email Address"
                   // helperText="Incorrect entry."
                   variant="standard"
+                  type="email"
+                  name="email"
+                  value={props.inputField['email']}
+                  onChange={props.handleChange}
+                  required
                 />
                 <TextField
                   id="standard-password-input"
                   label="Password"
                   type="password"
+                  name="password"
                   autoComplete="current-password"
                   variant="standard"
+                  value={props.inputField['password']}
+                  onChange={props.handleChange}
+                  required
                 />
             <Grid sx={{
               display: 'flex',
@@ -105,12 +99,12 @@ function LoginView() {
                 label="Remember me"
               />
               <Typography variant='body2'>
-                <Link href="#" >
+                <Link to={{pathname: router.signUp}}>
                   Forgot password ?
                 </Link>
               </Typography>
               <Button
-                type='submit'
+                type="submit"
                 color='primary'
                 variant="contained"
                 style={btnstyle}
@@ -119,7 +113,7 @@ function LoginView() {
               </Button>
             </Grid>
             <Typography fontSize='13px'>
-              Don't have an account? <Link href='/signup'>Sign Up</Link>
+              Don't have an account? <Link to={{pathname: router.signUp}}> Sign Up</Link>
             </Typography>
             <Box sx={{ m: 2 }} />
           </Box>

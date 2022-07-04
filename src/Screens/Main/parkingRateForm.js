@@ -1,11 +1,42 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Box from "@mui/material/Box";
-import {Button, IconButton, Popover, Typography, useMediaQuery} from "@mui/material";
+import {Button, Divider, IconButton, Popover, Typography, useMediaQuery} from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import LocalParkingIcon from '@mui/icons-material/LocalParking';
 import InfoIcon from '@mui/icons-material/Info';
+// import CircularSlider from '@fseehawer/react-circular-slider';
+import { CircleSlider } from "react-circle-slider";
+import moment from 'moment';
+import {PaymentRequestButtonElement, useStripe, CardElement, useElements} from '@stripe/react-stripe-js';
+import parkingService from '../../services/parking-service';
+import Spinner from '../../Common/Spinner';
+import SnackAlert from '../../Common/Alerts';
+
+const CARD_OPTIONS = {
+  style: {
+      base: {
+          fontSize : '15px',
+          color: "#013941",
+          letterSpacing: "0.025em",
+          fontFamily: "Source Code Pro, monospace",
+          "::placeholder": {
+          color: "#aab7c4"
+          },          
+      },
+      invalid: {
+          color: "#9e2146"
+      }
+      }
+  }
 
 function ParkingRateForm(props) {
+  const stripe = useStripe();
+  const elements = useElements()
+  const [spinner, setSpinner] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [severity, setSeverity] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
+  const [paymentRequest, setPaymentRequest] = useState(null);
   const {
     setDrawerOpen,
   } = props
@@ -30,8 +61,75 @@ function ParkingRateForm(props) {
     setAnchorEl(null);
   };
 
-  const open = Boolean(anchorEl);
+  useEffect(() => {
+    if (stripe) {
+      const pr = stripe.paymentRequest({
+        country: 'US',
+        currency: 'usd',
+        total: {
+          label: 'Demo total',
+          amount: 1099,
+        },
+        requestPayerName: true,
+        requestPayerEmail: true,
+      });
+      // Check the availability of the Payment Request API.
+      pr.canMakePayment().then(result => {
+        if (result) {
+          console.log(result)
+          setPaymentRequest(pr);
+        }
+      });
 
+      pr.on('token', async  (ev) => {
+        console.log(ev)
+        ev.complete('success');
+      })
+    }
+  }, [stripe]);
+
+  const purchaseParking= async (e)=>{
+    e.preventDefault();
+    setSpinner(true);
+    const {error, paymentMethod} = await stripe.createPaymentMethod({
+        type: 'card',
+        card: elements.getElement(CardElement),
+    })
+    if(!error){
+        try{
+            // const cardElement = elements.getElement(CardElement);
+            // let token  = await stripe.createToken(cardElement); 
+            // console.log(paymentMethod);
+            let body = {
+              paymentMethod : paymentMethod,
+              amount : (props.rateCycle[props.steps].rate/100).toFixed(2)
+            }
+            const res = await parkingService.buyParking(body);
+            if(res.data.success){
+              setAlertMessage('Parking purchased');
+              setSeverity('success');
+              setShowAlert(true);
+            }else{
+              setAlertMessage(res.data.message);
+              setSeverity('error');
+              setShowAlert(true);
+            }
+        }catch(error){
+            console.log("Error", error)
+            setAlertMessage(error);
+            setSeverity('error');
+            setShowAlert(true);
+        }
+    }else{
+        console.log("Error", error)
+        setAlertMessage(error);
+        setSeverity('error');
+        setShowAlert(true);
+    }
+    setSpinner(false);
+  }
+
+  const open = Boolean(anchorEl);
   return (
     <Box sx={{
       display: 'flex',
@@ -62,66 +160,82 @@ function ParkingRateForm(props) {
           Select Parking Rate
         </Typography>
       </Box>
-      <Box sx={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', marginTop: '20%', padding: '0 8% 0 8%'}}>
-        <Button variant='contained' style={parkingRateButton} fullWidth sx={{justifyContent: 'flex-start'}}>
-          <IconButton
-            onMouseEnter={handlePopoverOpen}
-            onMouseLeave={handlePopoverClose}
+      <Box sx={{width: '80%', background: '#f8f8f8'}}>
+        <Box sx={{display: 'flex', marginTop: 2, justifyContent: 'space-between', alignItems: 'flex-end', color: 'black'}}>
+          <Typography variant='caption' align='left' sx={{color: 'primary.main'}} >
+            {moment().format("MMM Do YYYY, hh:mm a")}
+          </Typography>
+        </Box>
+        <Divider/>
+        <Box sx={{display: 'flex', marginTop: 2, justifyContent: 'space-between', alignItems: 'flex-end', color: 'black'}}>
+          <Typography variant='caption' align='left' sx={{color: 'primary.main'}} >
+            Your parking session will end:
+          </Typography>
+          <Typography variant='caption' align='left' 
+            sx={{background: '#161b40', color: 'aliceblue', padding: '0 23px', borderRadius: '17px'}} 
           >
-            <InfoIcon />
-          </IconButton>
-          <Popover
-            id="mouse-over-popover"
-            sx={{
-              pointerEvents: 'none',
-            }}
-            open={open}
-            anchorEl={anchorEl}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'left',
-            }}
-            onClose={handlePopoverClose}
-            disableRestoreFocus
-          >
-            <Typography sx={{ p: 1 }}>Info About This</Typography>
-          </Popover>
-          Resident Parking Rate 3 Hours Free
-        </Button>
-        <Button variant='contained' style={parkingRateButton} fullWidth sx={{justifyContent: 'flex-start'}}>
-          <IconButton
-            onMouseEnter={handlePopoverOpen}
-            onMouseLeave={handlePopoverClose}
-          >
-            <InfoIcon />
-          </IconButton>
-          <Popover
-            id="mouse-over-popover"
-            sx={{
-              pointerEvents: 'none',
-            }}
-            open={open}
-            anchorEl={anchorEl}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'left',
-            }}
-            onClose={handlePopoverClose}
-            disableRestoreFocus
-          >
-            <Typography sx={{ p: 1 }}>Info About This</Typography>
-          </Popover>
-          Visitor Parking Rate
-        </Button>
+            {props.rateCycle[props.steps].day}
+          </Typography>
+        </Box>
+        <Box sx={{display: 'flex', marginTop: 2, justifyContent: 'space-between', alignItems: 'flex-end', color: 'black'}}>
+          <Typography variant='subtitle1' align='left' sx={{color: 'primary.main'}} >
+            {moment(props.rateCycle[props.steps].time_desc, "MMMM Do YYYY, hh:mm a").format("MMM Do YYYY")}
+          </Typography>
+          <Typography variant='h4' align='left' sx={{color: 'primary.main'}} >
+            {moment(props.rateCycle[props.steps].time_desc, "MMM Do YYYY, hh:mm a").format("hh:mm a")}
+          </Typography>
+        </Box>
       </Box>
+      <Divider sx={{width: '80%'}}/>
+      <Box sx={{display: 'flex', width: '80%', marginTop: 2, justifyContent: 'space-between', alignItems: 'flex-end', color: 'black'}}>
+        <Typography variant='caption' align='left' sx={{color: 'primary.main'}} >
+          Total (incl. 5% GST):
+        </Typography>
+        <Typography variant='caption' align='left' sx={{color: 'primary.main'}} >
+          CA${(props.rateCycle[props.steps].rate/100).toFixed(2)}
+        </Typography>
+      </Box>
+      <Box sx={{width: '80%', textAlign: 'center', position: 'relative'}}>
+        <Box sx={{position: 'absolute', left: '41%', top: '40%'}} >
+          <Typography variant='subtitle1' align='left' sx={{color: 'primary.main', textAlign: 'center'}} >
+            {props.rateCycle[props.steps].time_diff}
+          </Typography>
+          <Typography variant='h6' align='left' sx={{color: 'primary.main', textAlign: 'center'}} >
+            CA${(props.rateCycle[props.steps].rate/100).toFixed(2)}
+          </Typography>
+        </Box>
+        <CircleSlider 
+          value={props.steps} 
+          min={0} 
+          max={props.rateCycle.length-1} 
+          onChange={props.handleChange} 
+          size={280}
+        />
+      </Box>
+      <Box sx={{width:'80%',bottom: '25px', position: 'absolute'}}>
+        {paymentRequest && <PaymentRequestButtonElement options={{paymentRequest}} />}
+        <form onSubmit={purchaseParking} style={{width:'100%',marginTop: '16px'}}>
+            <CardElement options={CARD_OPTIONS}/>
+            <Button 
+              type='submit'
+              size='large'
+              variant='contained'
+              sx={{borderRadius: 8, width: '100%',marginTop: 2}}
+            >
+              Pay CA${(props.rateCycle[props.steps].rate/100).toFixed(2)}
+            </Button>
+        </form>
+      </Box>
+      <Spinner
+        spinner = {spinner}  
+      />
+      <SnackAlert
+        alertMessage = {alertMessage}
+        showAlert = {showAlert}
+        severity = {severity}
+        
+        closeAlert = {()=>setShowAlert(!showAlert)}
+      />
     </Box>
   );
 }

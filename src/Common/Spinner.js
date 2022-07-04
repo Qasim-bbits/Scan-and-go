@@ -10,14 +10,11 @@ const useStyles = styled((theme) => ({
 }));
 
 function Spinner(props){
-  const {
-    showSpinner,
-  } = props;
   const classes = useStyles();
 
   return(
     <>
-      <Backdrop className={classes.backdrop} open={showSpinner}>
+      <Backdrop className={classes.backdrop} open={props.spinner}>
         <Box position="relative" display="inline-flex">
           <CircularProgress sx={{color: '#0581FC'}}/>
         </Box>

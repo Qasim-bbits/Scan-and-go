@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate } from 'react-router-dom';
 import {
   Autocomplete,
   Avatar,
@@ -9,18 +9,18 @@ import {
   FormControl,
   FormControlLabel,
   Grid, InputLabel,
-  Link,
   MenuItem,
   Select,
   TextField,
   Typography
 } from "@mui/material";
 import {countries} from "./signUp.utils";
-import Alert from "../../Common/Alerts";
-import Logo from "../../Assets/Images/Logos/Logo.svg";
-import ResponsiveCard from "../ResponsiveCard";
+import Alert from "../../../Common/Alerts";
+import Logo from "../../../assets/images/Logos/Logo.svg";
+import ResponsiveCard from "../../ResponsiveCard";
+import { router } from '../../../Routes/routhPaths';
 
-function SignUpView() {
+function SignUpView(props) {
 
   const navigate = useNavigate();
   const [showSpinner, setShowSpinner] = useState(false);
@@ -50,9 +50,12 @@ function SignUpView() {
               labelId="demo-simple-select-standard-label"
               id="demo-simple-select-standard"
               label="Language"
+              name="language"
+              value={props.inputField['language']}
+              onChange={props.handleChange}
             >
-              <MenuItem value={'english'}>English</MenuItem>
-              <MenuItem value={'français'}>Français</MenuItem>
+              <MenuItem value={'en'}>English</MenuItem>
+              <MenuItem value={'fr'}>Français</MenuItem>
             </Select>
           </FormControl>
         </Box>
@@ -66,29 +69,80 @@ function SignUpView() {
           <Grid align='center'>
             <Avatar src={Logo} sx={{ width: '60%', height: '70%', marginTop: '10%' }} variant='square' />
           </Grid>
-        <form>
+        <form onSubmit={props.handleSubmit}>
           <Box
             sx={{'& .MuiTextField-root': { m: 1, width: '35ch' }, display: 'flex', flexDirection: 'column', alignItems: 'center'}}
-            component="form"
             noValidate
             autoComplete="off"
           >
             <TextField
               id="standard-error-helper-text"
+              label="First Name"
+              fullWidth
+              variant="standard"
+              type="text"
+              name="fname"
+              value={props.inputField['fname']}
+              onChange={props.handleChange}
+              required
+            />
+            <TextField
+              id="standard-error-helper-text"
+              label="Last Name"
+              fullWidth
+              variant="standard"
+              type="text"
+              name="lname"
+              value={props.inputField['lname']}
+              onChange={props.handleChange}
+              required
+            />
+            <TextField
+              id="standard-error-helper-text"
+              label="Address"
+              fullWidth
+              variant="standard"
+              type="text"
+              name="address"
+              value={props.inputField['address']}
+              onChange={props.handleChange}
+              required
+            />
+            <TextField
+              id="standard-error-helper-text"
+              label="Mobile No"
+              fullWidth
+              variant="standard"
+              type="number"
+              name="mobile_no"
+              value={props.inputField['mobile_no']}
+              onChange={props.handleChange}
+              required
+            />
+            <TextField
+              id="standard-error-helper-text"
               label="Email Address"
               fullWidth
-              // helperText="Incorrect entry."
               variant="standard"
+              type="email"
+              name="email"
+              value={props.inputField['email']}
+              onChange={props.handleChange}
+              required
             />
             <TextField
               id="standard-password-input"
               label="Password"
               fullWidth
+              name="password"
               type="password"
               autoComplete="current-password"
               variant="standard"
+              onChange={props.handleChange}
+              value={props.inputField['password']}
+              required
             />
-          <Autocomplete
+          {/* <Autocomplete
             id="country-select-demo"
             options={countries}
             autoHighlight
@@ -110,12 +164,13 @@ function SignUpView() {
                   {...params}
                   variant="standard"
                   label="Where will you use ConnectedGOC?"
+                  required
                   inputProps={{
                     ...params.inputProps,
                   }}
                 />
               )}
-            />
+            /> */}
             <Grid sx={{
               display: 'flex',
               flexDirection: 'row',
@@ -128,8 +183,11 @@ function SignUpView() {
               <FormControlLabel
                 control={
                   <Checkbox
-                    name="checkedB"
+                    name="accept_conditions"
                     color="primary"
+                    onChange={props.handleCheck}
+                    value={props.inputField['accept_conditions']}
+                    required
                   />
                 }
                 label={
@@ -140,7 +198,7 @@ function SignUpView() {
               />
               <Box sx={{ m: 2 }} />
               <Button
-                type='Sign Up'
+                type='submit'
                 color='primary'
                 variant="contained"
                 style={btnstyle}
@@ -150,7 +208,7 @@ function SignUpView() {
               </Button>
             </Grid>
             <Typography fontSize='13px'>
-              Already a member? <Link href='/'>Log In</Link>
+              Already a member? <Link to={{pathname: router.login}}>Log In</Link>
             </Typography>
             <Box sx={{ m: 2 }} />
           </Box>
