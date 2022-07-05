@@ -63,7 +63,9 @@ function SelectPlateForm(props) {
         {listOfCars.map((car) => (
           <Paper elevation={1} sx={{display: 'flex', height: 120, width: '80%', backgroundColor:'#f0f2f5', marginBottom: '5px'}}>
             <ListItem>
-              <Box sx={{display: 'flex', flexDirection: 'column', borderRight: '1px solid black'}}>
+              <Box
+                sx={{display: 'flex', flexDirection: 'column', borderRight: '1px solid black'}}
+              >
               <IconButton
                 color="primary"
                 edge="start"
@@ -81,9 +83,14 @@ function SelectPlateForm(props) {
                 <DeleteIcon />
               </IconButton>
               </Box>
+              <ListItem
+                onClick={()=>props.onPlateSelect(car.numberPlate)}
+                sx={{cursor: 'pointer'}}
+              >
                 <Typography variant='h4' sx={{marginLeft: '10%'}}>
                   {car.numberPlate}
                 </Typography>
+              </ListItem>
             </ListItem>
           </Paper>
         ))}
