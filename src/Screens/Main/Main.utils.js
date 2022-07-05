@@ -155,7 +155,7 @@ export default function MainUtils() {
   }
 
   const confirmZone=(e)=>{
-    setDrawerComponent(2);
+    setDrawerComponent(0);
     toggleDrawer();
     console.log(tarif)
   }
