@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Drawer } from '@mui/material';
+import {Drawer, useMediaQuery} from '@mui/material';
 import moment from 'moment';
 import AddPlateForm from './addPlateForm';
 import MainView from './main.view';
@@ -20,6 +20,7 @@ export default function MainUtils() {
   const [selectedPlate, setSelectedPlate] = useState([]);
   const [drawer, setDrawer] = useState(false);
   const [drawerComponent, setDrawerComponent] = useState(0);
+
   const [cities, setCities] = useState([
     {id: 1, name: 'Ottawa', polygon:[
       {lat: 45.415421753842104, lng: -76.35184636553302},
