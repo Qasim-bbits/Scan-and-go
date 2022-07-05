@@ -64,7 +64,7 @@ function SelectPlateForm(props) {
           <Paper elevation={1} sx={{display: 'flex', height: 120, width: '80%', backgroundColor:'#f0f2f5', marginBottom: '5px'}}>
             <ListItem>
               <Box
-                sx={{display: 'flex', flexDirection: 'column', borderRight: '1px solid black'}}
+                sx={{display: 'flex', flexDirection: 'column', borderRight: '2px solid #b5b5b7'}}
               >
               <IconButton
                 color="primary"
@@ -74,7 +74,8 @@ function SelectPlateForm(props) {
               </IconButton>
                 <Divider
                   variant='fullWidth'
-                  sx={{width: '100%', backgroundColor: 'black'}}
+                  sx={{width: '100%', backgroundColor: '#b5b5b7', borderBottomWidth: 2}}
+
                 />
               <IconButton
                 color="primary"
@@ -87,7 +88,7 @@ function SelectPlateForm(props) {
                 onClick={()=>props.onPlateSelect(car.numberPlate)}
                 sx={{cursor: 'pointer'}}
               >
-                <Typography variant='h4' sx={{marginLeft: '10%'}}>
+                <Typography variant='h5' sx={{marginLeft: '10%'}}>
                   {car.numberPlate}
                 </Typography>
               </ListItem>
