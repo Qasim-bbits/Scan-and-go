@@ -38,7 +38,7 @@ function SelectTariff(props) {
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'flex-start',
-      width: smDown ? '100%' : 600,
+      width: smDown ? '100vw' : 600,
       backgroundColor: '#fff',
       height: '100%'
     }}>
