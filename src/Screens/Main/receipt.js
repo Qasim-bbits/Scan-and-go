@@ -3,10 +3,10 @@ import Box from "@mui/material/Box";
 import {Button, IconButton, Typography, Paper, useMediaQuery, ListItem, Divider} from "@mui/material";
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import moment from 'moment';
+import Logo from "../../assets/images/Logos/logo.png"
 
-function SelectPlateForm(props) {
+function Receipt(props) {
   const {
     setDrawerOpen,
   } = props
@@ -56,53 +56,21 @@ function SelectPlateForm(props) {
           >
             <DirectionsCarIcon />
           </IconButton>
-          Select Plate
+          Parking Purchased
         </Typography>
-        <Button size='large' variant='contained' onClick={props.addPlateDrawer}>
-          Add Plate
-        </Button>
       </Box>
       <Box sx={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' ,marginTop: '10%', padding: '0 1% 0 1%',width: '100%'}}>
-        {props.plates.map((x) => (
-          <Paper elevation={1} sx={{display: 'flex', height: 120, width: '80%', backgroundColor:'#f0f2f5', marginBottom: '5px'}}>
-            <ListItem>
-              <Box
-                sx={{display: 'flex', flexDirection: 'column', borderRight: '2px solid #b5b5b7'}}
-              >
-              <IconButton
-                color="primary"
-                edge="start"
-                onClick={()=>props.onPlateEdit(x)}
-              >
-                <EditIcon />
-              </IconButton>
-                <Divider
-                  variant='fullWidth'
-                  sx={{width: '100%', backgroundColor: '#b5b5b7', borderBottomWidth: 2}}
-
-                />
-              <IconButton
-                color="primary"
-                edge="start"
-                onClick={()=>props.onPlateDel(x._id)}
-              >
-                <DeleteIcon />
-              </IconButton>
-              </Box>
-              <ListItem
-                onClick={()=>props.onPlateSelect(x.plate)}
-                sx={{cursor: 'pointer'}}
-              >
-                <Typography variant='h5' sx={{marginLeft: '10%'}}>
-                  {x.plate}
-                </Typography>
-              </ListItem>
-            </ListItem>
-          </Paper>
-        ))}
+        <Paper elevation={1} sx={{p: 2, width: '80%', backgroundColor:'#f0f2f5', marginBottom: '5px'}}>
+          <div style={{textAlign: "center"}}>
+            <img src={Logo} alt="Logo" width={'50%'}/>
+          </div>
+          <div>
+            You have succesfully purhcased parking from&nbsp;{moment().format("MMM Do YYYY, hh:mm a")}&nbsp;to&nbsp;{props.rateCycle[props.steps].time_desc}
+          </div>
+        </Paper>
       </Box>
     </Box>
   );
 }
 
-export default SelectPlateForm;
+export default Receipt;

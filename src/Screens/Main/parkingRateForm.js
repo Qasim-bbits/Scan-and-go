@@ -50,7 +50,7 @@ function ParkingRateForm(props) {
     defaultMatches: true,
     noSsr: false
   });
-
+  
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handlePopoverOpen = (event) => {
@@ -62,13 +62,13 @@ function ParkingRateForm(props) {
   };
 
   useEffect(() => {
-    if (stripe) {
+    if (stripe && props.rateCycle[props.steps].rate > 0) {
       const pr = stripe.paymentRequest({
         country: 'US',
         currency: 'usd',
         total: {
           label: 'Demo total',
-          amount: 1099,
+          amount: props.rateCycle[props.steps].rate,
         },
         requestPayerName: true,
         requestPayerEmail: true,
@@ -81,9 +81,29 @@ function ParkingRateForm(props) {
         }
       });
 
-      pr.on('token', async  (ev) => {
+      pr.on('paymentmethod', async  (ev) => {
         console.log(ev)
+        let body = {
+          paymentMethod : ev.paymentMethod.id,
+          amount : (props.rateCycle[props.steps].rate/100).toFixed(2),
+          plate: props.plate,
+          user: props.user.result._id,
+          zone: props.zone,
+          city: props.city,
+          from: moment().format("MMM Do YYYY, hh:mm a"),
+          to: props.rateCycle[props.steps].time_desc,
+          // token: ev.token.id
+        }
         ev.complete('success');
+        const res = await parkingService.buyParking(body);
+        setSpinner(false);
+        if(!res.data.message){
+          props.showReciept();
+        }else{
+          setAlertMessage(res.data.message);
+          setSeverity('error');
+          setShowAlert(true);
+        }
       })
     }
   }, [stripe]);
@@ -91,38 +111,58 @@ function ParkingRateForm(props) {
   const purchaseParking= async (e)=>{
     e.preventDefault();
     setSpinner(true);
+    if(props.rateCycle[props.steps].rate == 0){
+      let body = {
+        paymentMethod: '',
+        amount: (props.rateCycle[props.steps].rate/100).toFixed(2),
+        plate: props.plate,
+        user: props.user.result._id,
+        zone: props.zone,
+        city: props.city,
+        from: moment().format("MMM Do YYYY, hh:mm a"),
+        to: props.rateCycle[props.steps].time_desc
+      }
+      const res = await parkingService.buyParking(body);
+      setSpinner(false);
+      if(!res.data.message){
+        props.showReciept();
+      }else{
+        setAlertMessage(res.data.message);
+        setSeverity('error');
+        setShowAlert(true);
+      }
+      return;
+    }
     const {error, paymentMethod} = await stripe.createPaymentMethod({
         type: 'card',
         card: elements.getElement(CardElement),
     })
     if(!error){
         try{
-            // const cardElement = elements.getElement(CardElement);
-            // let token  = await stripe.createToken(cardElement); 
-            // console.log(paymentMethod);
             let body = {
               paymentMethod : paymentMethod,
-              amount : (props.rateCycle[props.steps].rate/100).toFixed(2)
+              amount : (props.rateCycle[props.steps].rate/100).toFixed(2),
+              plate: props.plate,
+              user: props.user.result._id,
+              zone: props.zone,
+              city: props.city,
+              from: moment().format("MMM Do YYYY, hh:mm a"),
+              to: props.rateCycle[props.steps].time_desc
             }
             const res = await parkingService.buyParking(body);
-            if(res.data.success){
+            if(!res.data.message){
+              props.showReciept();
+            }else{
               setAlertMessage('Parking purchased');
               setSeverity('success');
               setShowAlert(true);
-            }else{
-              setAlertMessage(res.data.message);
-              setSeverity('error');
-              setShowAlert(true);
             }
         }catch(error){
-            console.log("Error", error)
-            setAlertMessage(error);
-            setSeverity('error');
-            setShowAlert(true);
+            console.log("Error", error.message)
         }
     }else{
         console.log("Error", error)
-        setAlertMessage(error);
+        setAlertMessage(error.message);
         setSeverity('error');
         setShowAlert(true);
     }
@@ -144,7 +184,7 @@ function ParkingRateForm(props) {
         <IconButton
           color="inherit"
           edge="end"
-          onClick={() => setDrawerOpen(false)}
+          onClick={props.back}
         >
           <ArrowBackIcon />
         </IconButton>
@@ -213,9 +253,9 @@ function ParkingRateForm(props) {
         />
       </Box>
       <Box sx={{width:'80%',bottom: '25px', position: 'absolute'}}>
-        {paymentRequest && <PaymentRequestButtonElement options={{paymentRequest}} />}
+        {props.rateCycle[props.steps].rate != 0 && paymentRequest && <PaymentRequestButtonElement options={{paymentRequest}} />}
         <form onSubmit={purchaseParking} style={{width:'100%',marginTop: '16px'}}>
-            <CardElement options={CARD_OPTIONS}/>
+            {props.rateCycle[props.steps].rate != 0 && <CardElement options={CARD_OPTIONS}/>}
             <Button 
               type='submit'
               size='large'

@@ -46,7 +46,7 @@ function SelectTariff(props) {
         <IconButton
           color="inherit"
           edge="end"
-          onClick={() => setDrawerOpen(false)}
+          onClick={props.back}
         >
           <ArrowBackIcon />
         </IconButton>
@@ -90,9 +90,9 @@ function SelectTariff(props) {
                 onClose={handlePopoverClose}
                 disableRestoreFocus
               >
-                <Typography sx={{ p: 1 }}>{x.tar_desc}</Typography>
+                <Typography sx={{ p: 1 }}>{x.rate_name}</Typography>
               </Popover>
-              {x.tar_desc}
+              {x.rate_name}
             </Button>
           )
         })}

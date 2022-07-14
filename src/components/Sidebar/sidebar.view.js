@@ -1,6 +1,6 @@
 import React from 'react';
 import {NavLink} from "react-router-dom";
-import logo from "../../assets/images/Logos/Logo.svg";
+import logo from "../../assets/images/Logos/logo.svg";
 import {
   Avatar,
   Box,

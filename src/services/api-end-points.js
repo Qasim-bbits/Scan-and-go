@@ -25,10 +25,15 @@ export const endpoints = {
 
   ///---Home service--///
 
-  home : {
-      getHomeRecord : config.url.API_URL + 'getHomeRecord',
-      getProductByCat : config.url.API_URL + 'getProductByCat',
-      getCollectionsByCat : config.url.API_URL + 'getCollectionsByCat',
+  main : {
+      getCities : config.url.API_URL + 'getCities',
+      getZonesById : config.url.API_URL + 'getZonesById',
+      getPlatesByUser : config.url.API_URL + 'getPlatesByUser',
+      addPlate : config.url.API_URL + 'addPlate',
+      delPlate : config.url.API_URL + 'delPlate',
+      editPlate : config.url.API_URL + 'editPlate',
+      getRateById : config.url.API_URL + 'getRateById',
+      getRateSteps : config.url.API_URL + 'getRateSteps',
   },
 
   ///---Category service--///

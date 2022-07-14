@@ -14,7 +14,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import Logo from "../../../Assets/Images/Logos/Logo.svg";
+import Logo from "../../../assets/images/Logos/logo.svg";
 import Alert from "../../../Common/Alerts";
 import ResponsiveCard from "../../ResponsiveCard";
 import { router } from '../../../Routes/routhPaths';

@@ -1,12 +1,11 @@
 const prod = {
     url: {
-        API_URL: 'https://champfitter.com/champfitter-api/index.php/' ,
+        API_URL: '' ,
         Publishable_key: '',
     }
 };
 const dev = {
     url: {
-        // API_URL: 'https://kulturking.com/kulturking-api/index.php/' ,
         API_URL: 'http://localhost:3001/' ,
     }
 };

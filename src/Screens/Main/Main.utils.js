@@ -7,52 +7,43 @@ import ParkingRateForm from './parkingRateForm';
 import SelectPlateForm from './selectPlateForm';
 import {Elements} from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js';
+import {getCenterOfBounds, isPointInPolygon} from 'geolib';
 import SelectTariff from './SelectTariff';
+import mainService from '../../services/main-service';
+import SnackAlert from '../../Common/Alerts';
+import Spinner from '../../Common/Spinner';
+import Receipt from './receipt';
 
 const stripePromise = loadStripe('pk_test_51JDF8yFMPgCzegFZyQVzPTBid8gLHHR1j67hjQM1sLSmbYBONnQ12xgq3Oz8DeRuezJYM1qds3IuQh7EZsw8r1wq00ms9dzlAA')
 export default function MainUtils() {
   var current_time = moment();
+  const [showSpinner, setShowSpinner] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
+  const [severity, setSeverity] = useState('');
   const [center,setCenter] = useState({lat: -3.745,lng: -38.523});
   const [zoom,setZoom] = useState(12);
   const [selectedCity, setSelectedCity] = useState(null);
   const [selectedZone, setSelectedZone] = useState(null);
   const [cityPolygon, setCityPolygon] = useState([]);
   const [selectedPlate, setSelectedPlate] = useState([]);
+  const [plates, setPlates] = useState([]);
   const [drawer, setDrawer] = useState(false);
   const [drawerComponent, setDrawerComponent] = useState(0);
-  const [cities, setCities] = useState([
-    {id: 1, name: 'Ottawa', polygon:[
-      {lat: 45.415421753842104, lng: -76.35184636553302},
-      {lat: 44.95758775225658, lng: -75.82429385901366},
-      {lat: 45.241046984450755, lng: -75.11170427931212},
-      {lat: 45.759814362346, lng: -75.49752626169197},
-      {lat: 45.415421753842104, lng: -76.35184636553302},
-    ]}
-  ]);
+  const [cities, setCities] = useState([]);
   const [steps, setSteps] = useState(0);
   const [rateCycle, setRateCycle] = useState([]);
-  const [zones, setZones] = useState([
-    {id: 0, name: '1213 Wellington Street West', city_id: 1, polygon:[
-      {lat: 45.40137422434006, lng: -75.73178268240439},
-      {lat: 45.40009358255076, lng: -75.7309565620324},
-      {lat: 45.40040997910444, lng: -75.73006606864443},
-      {lat: 45.401683080662316, lng: -75.7308492736724},
-      {lat: 45.40137422434006, lng: -75.73178268240439},
-    ]},
-    {id: 1, name: '275 Bank Street', city_id: 1, polygon:[
-      {lat: 45.41602351298204, lng: -75.69692094430772},
-      {lat: 45.41468295269993, lng: -75.69582660303574},
-      {lat: 45.4156092983147, lng: -75.69384176837578},
-      {lat: 45.41693477455525, lng: -75.69486100779577},
-      {lat: 45.41602351298204, lng: -75.69692094430772}
-    ]}
-  ]);
+  const [zones, setZones] = useState([]);
+  const [inputPlateField, setInputPlateField] = useState({});
+  const [btn, setBtn] = useState("Add Plate")
+  const [inPolygon, setInPolygon] = useState(false);
 
   const tarifdata = [
     {id: 0, tar_desc: 'Regular Rate', zone_id: 0},
     {id: 1, tar_desc: 'Residant Rate', zone_id: 0},
     {id: 2, tar_desc: 'Regular Rate', zone_id: 1},
   ]
+
   const [tarif, setTarif] = useState([])
 
   const rateTypeData = [
@@ -115,6 +106,7 @@ export default function MainUtils() {
   const [rateSteps, setRateSteps] = useState([]);
 
   useEffect(()=>{
+    getCities();
     // let time_increased = 0;
     // let date_now = moment().format('dddd')
     // let rate_cycle = [];
@@ -138,30 +130,76 @@ export default function MainUtils() {
     // setRateCycle(rate_cycle);
   },[])
 
-  const toggleDrawer = ()=>setDrawer(!drawer);
+  const getCities = async()=>{
+    const res = await mainService.getCities();
+    setCities(res.data)
+  }
 
-  const onSelectedCity = (e)=>{
+  const toggleDrawer = ()=>setDrawer(true);
+
+  const onSelectedCity = async(e)=>{
     setSelectedCity(e);
     setCityPolygon(e.polygon);
-    setCenter(e.polygon[0])
-    console.log(zones.filter(x=>x.city_id == e.id));
+    setCenter(getCenterOfPolygon(e.polygon))
+    setZoom(16);
+    const res = await mainService.getZonesById({id: e._id});
+    setZones(res.data)
   }
 
   const onSelectedZone = (e)=>{
     setSelectedZone(e);
-    setCenter(e.polygon[0])
-    setZoom(16);
+    console.log(getCenterOfPolygon(e.polygon));
+    setCenter(getCenterOfPolygon(e.polygon))
+    setZoom(20);
     setTarif(tarifdata.filter(x=>x.zone_id == e.id))
   }
 
-  const confirmZone=(e)=>{
-    setDrawerComponent(0);
+  const handleMapCenter = (center)=>{
+    if(selectedZone !== null){
+      const options = selectedZone.polygon.map(function(row) {
+        return { latitude : row.lat, longitude : row.lng }
+      })
+      setInPolygon(isPointInPolygon({latitude: center.lat, longitude: center.lng}, options))
+    }
+  }
+
+  const getCenterOfPolygon = (polygon) =>{
+    const options = polygon.map(function(row) {
+      return { latitude : row.lat, longitude : row.lng }
+    })
+    let center =  getCenterOfBounds(options);
+    return {lat: center.latitude, lng: center.longitude};
+  }
+
+  const confirmZone=async()=>{
+    if(selectedCity == null || selectedZone == null){
+      setAlertMessage("Please select city and zone");
+      setSeverity('error');
+      setShowAlert(true);
+      return;
+    }
+    setShowSpinner(true);
+    let user = JSON.parse(sessionStorage.getItem('userLogged'));
+    const res = await mainService.getPlatesByUser({id: user.result._id});
+    setPlates(res.data)
+    setDrawerComponent(2);
     toggleDrawer();
-    console.log(tarif)
+    setShowSpinner(false);
+    setBtn("Add Plate");
   }
 
   const onTarifSelect = async(e)=>{
-    setDrawerComponent(2);
+    setSteps(0);
+    const res = await mainService.getRateSteps({id: e._id, plate: selectedPlate, rate_type: e.rate_type})
+    setRateCycle(res.data);
+    if(res.data.length > 0){
+      setDrawerComponent(3);
+    }else{
+      setAlertMessage(res.data.msg);
+      setSeverity("error");
+      setShowAlert(true);
+    }
+    return;
     let rateTypeFilter = rateTypeData.filter(x=>x.tarif_id == e.id);
     setRateType(rateTypeFilter)
     console.log(rateTypeFilter)
@@ -175,6 +213,12 @@ export default function MainUtils() {
 
   const onPlateSelect = async(e)=>{
     setSelectedPlate(e);
+    setShowSpinner(true);
+    const res = await mainService.getRateById({id: selectedZone._id, plate: e});
+    setTarif(res.data);
+    setDrawerComponent(0);
+    setShowSpinner(false);
+    return;
     let time_increased = 0;
     let date_now = moment().format('dddd')
     let rate_cycle = [];
@@ -197,7 +241,6 @@ export default function MainUtils() {
       }
     console.log(rate_cycle)
     setRateCycle(rate_cycle);
-    setDrawerComponent(3);
   }
 
   
@@ -295,6 +338,44 @@ export default function MainUtils() {
   const handleChange = (value) => {
     setSteps(value);
   };
+
+  const onPlateDel = async(e) => {
+    const res = await mainService.delPlate({id: e});
+    if(res.data.deletedCount == 1){
+      confirmZone();
+    }else{
+      setAlertMessage("Unable to delete this plate");
+      setSeverity("error");
+      setShowAlert(true);
+    }
+  }
+
+  const onPlateEdit = async(e) => {
+    console.log(e)
+    inputPlateField['id'] = e._id;
+    inputPlateField['plate'] = e.plate;
+    setDrawerComponent(1);
+    setBtn("Edit Plate");
+  }
+
+  const handlePlateChange = (e) =>{
+    setInputPlateField({...inputPlateField, [e.target.name] : e.target.value})
+  }
+
+  const handlePlateSubmit = async(e) =>{
+    e.preventDefault();
+    setShowSpinner(true);
+    if(btn == "Add Plate"){
+      let user = JSON.parse(sessionStorage.getItem('userLogged'))
+      inputPlateField['user_id'] = user.result._id
+      await mainService.addPlate(inputPlateField);
+    }else{
+      await mainService.editPlate(inputPlateField);
+    }
+    setShowSpinner(false);
+    confirmZone();
+  }
+
   return (
     <>
       <MainView
@@ -305,10 +386,12 @@ export default function MainUtils() {
         selectedCity = {selectedCity}
         selectedZone = {selectedZone}
         cityPolygon = {cityPolygon}
+        inPolygon = {inPolygon}
 
         onSelectedCity = {(e)=>onSelectedCity(e)}
         onSelectedZone = {(e)=>onSelectedZone(e)}
         confirmZone = {()=>confirmZone()}
+        handleMapCenter = {(e)=>handleMapCenter(e)}
       />
       <Drawer
         variant='temporary'
@@ -320,24 +403,61 @@ export default function MainUtils() {
           tarif = {tarif}
           setDrawerOpen = {toggleDrawer}
           onTarifSelect = {(e)=>onTarifSelect(e)}
-        />}
+          back = {()=>setDrawerComponent(2)}
+          />}
         {drawerComponent === 1 && <AddPlateForm
           setDrawerOpen = {toggleDrawer}
+          inputPlateField = {inputPlateField}
+          btn = {btn}
+
+          handlePlateChange = {(e)=>handlePlateChange(e)}
+          handlePlateSubmit = {(e)=>handlePlateSubmit(e)}
+          back = {()=>setDrawerComponent(2)}
         />}
         {drawerComponent === 2 && <SelectPlateForm 
           setDrawerOpen = {toggleDrawer}
+          plates = {plates}
+
           onPlateSelect = {(e)=>onPlateSelect(e)}
-        />}
+          onPlateEdit = {(e)=>onPlateEdit(e)}
+          onPlateDel = {(e)=>onPlateDel(e)}
+          addPlateDrawer = {()=>{setDrawerComponent(1)}}
+          back = {()=>setDrawer(false)}
+          />}
         <Elements stripe={stripePromise}>
-          {drawerComponent === 3 && <ParkingRateForm 
+          {drawerComponent === 3 && rateCycle.length > 0 && <ParkingRateForm 
             steps = {steps}
             rateCycle = {rateCycle}
+            user = {JSON.parse(sessionStorage.getItem('userLogged'))}
+            plate = {selectedPlate}
+            zone = {selectedZone._id}
+            city = {selectedCity._id}
 
             setDrawerOpen={toggleDrawer} 
             handleChange = {(e)=>handleChange(e)}
+            back = {()=>setDrawerComponent(0)}
+            showReciept = {()=>setDrawerComponent(4)}
           />}
         </Elements>
+        {drawerComponent === 4 && <Receipt 
+            steps = {steps}
+            rateCycle = {rateCycle}
+            plate = {selectedPlate}
+
+            setDrawerOpen={toggleDrawer}
+            back = {()=>setDrawer(false)}
+          />}
       </Drawer>
+      <SnackAlert
+        alertMessage = {alertMessage}
+        showAlert = {showAlert}
+        severity = {severity}
+        
+        closeAlert = {()=>setShowAlert(!showAlert)}
+      />
+      <Spinner
+        spinner = {showSpinner}
+      />
     </>
   );
 }

@@ -30,7 +30,7 @@ function AddPlateForm(props) {
         <IconButton
           color="inherit"
           edge="end"
-          onClick={() => setDrawerOpen(false)}
+          onClick={props.back}
         >
           <ArrowBackIcon />
         </IconButton>
@@ -43,20 +43,25 @@ function AddPlateForm(props) {
           >
             <DirectionsCarIcon />
           </IconButton>
-          Add Your First Plate
+          {props.btn}
         </Typography>
       </Box>
       <Box sx={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', marginTop: '10%', padding: '0 8% 0 8%'}}>
         <Typography variant= 'body1' color='#14a7e0' marginBottom='5%'>
           You can add many cars as you want, organize and always have them in your hands.
         </Typography>
-        <TextField
-          fullWidth
-          placeholder='New Plate'
-        />
-        <Button style={btnstyle}>
-          Add Plate
-        </Button>
+        <form onSubmit = {props.handlePlateSubmit} style={{width: '100%'}}>
+          <TextField
+            fullWidth
+            placeholder='New Plate'
+            name="plate"
+            value={props.inputPlateField["plate"]}
+            onChange={props.handlePlateChange}
+          />
+          <Button style={btnstyle} type="submit">
+            {props.btn}
+          </Button>
+        </form>
       </Box>
     </Box>
   );
