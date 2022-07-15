@@ -4,7 +4,7 @@ import {Button, IconButton, Typography, Paper, useMediaQuery, ListItem, Divider}
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import moment from 'moment';
-import Logo from "../../assets/images/Logos/logo.png"
+import Logo from "../../Assets/Images/Logos/Logo.svg"
 
 function Receipt(props) {
   const {

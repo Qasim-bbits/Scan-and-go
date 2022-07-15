@@ -2,7 +2,7 @@ import React from 'react'
 import { Routes, Route, Navigate  } from 'react-router-dom'
 import './App.css'
 import {router} from './Routes/routhPaths';
-import {Layout} from "./components/SidebarHeaderWrapper";
+import {Layout} from "./Components/SidebarHeaderWrapper";
 import LoginUtils from './Screens/Auth/Login/login.utils';
 import MainUtils from './Screens/Main/Main.utils';
 import SignupUtils from './Screens/Auth/SignUp/signUp.utils';

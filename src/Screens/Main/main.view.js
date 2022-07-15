@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import {Layout} from "../../components/SidebarHeaderWrapper";
+import {Layout} from "../../Components/SidebarHeaderWrapper";
 import { GoogleMap, LoadScript, Polygon } from '@react-google-maps/api';
-import {Autocomplete, Box, Button, TextField, useMediaQuery} from "@mui/material";
-import Marker from "../../assets/images/image/marker.png";
+import {Autocomplete, Box, Button, TextField, Typography, useMediaQuery} from "@mui/material";
+import Marker from "../../Assets/Images/image/marker.png";
 
 const cityPolygonOptions = {
   fillColor: "#14a7e0",
@@ -33,7 +33,7 @@ const zonePolygonOptions = {
 export default function MainView(props) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [mapref, setMapRef] = useState(null);
-  
+
   const handleOnLoad = map => {
     setMapRef(map);
   };
@@ -54,7 +54,7 @@ export default function MainView(props) {
   });
 
   const containerStyle = {
-    height: '90vh',
+    height: '82vh',
   };
 
   const btnStyle={width: smDown ? '60%' : '40%', borderRadius: 20}
@@ -130,7 +130,7 @@ export default function MainView(props) {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    sx={{width: smDown ? 200 : 300, backgroundColor: '#fff', marginTop: 2}}
+                    sx={{width: smDown ? 200 : 300, backgroundColor: '#fff', marginTop: 1}}
                     label="Search Zone"
                     variant='outlined'
                     size='small'
@@ -143,8 +143,10 @@ export default function MainView(props) {
               />
             </Box>
             <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', height: '65%'}}>
-              {props.inPolygon && <Button size='large' variant='contained' style={btnStyle} onClick={props.confirmZone}>
-                Confirm Your Zone
+              {<Button size='large' variant='contained' style={btnStyle} onClick={props.confirmZone}>
+                <Typography sx={{fontSize: smDown ? 'small' : 'large'}}>
+                  Confirm Your Zone
+                </Typography>
               </Button>}
             </Box>
           </GoogleMap>

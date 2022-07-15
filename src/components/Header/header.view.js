@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
-import { AppBar, IconButton, Toolbar, Tooltip, Typography } from '@mui/material';
+import {AppBar, Button, IconButton, Toolbar, Tooltip, Typography} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
@@ -27,12 +28,14 @@ export const HeaderView = (props) => {
           sx={{
             minHeight: 64,
             left: 20,
-            px: 2,
+            px: 4,
+            justifyContent: 'flex-end',
           }}
         >
           <IconButton
             onClick={onSidebarOpen}
             sx={{
+              position: 'none',
               display: {
                 xs: 'inline-flex',
                 lg: 'none'
@@ -41,6 +44,9 @@ export const HeaderView = (props) => {
             }}
           >
             <MenuIcon fontSize="small" />
+          </IconButton>
+          <IconButton sx={{color: '#fff', marginLeft: '85%'}}>
+            <LogoutIcon />
           </IconButton>
         </Toolbar>
       </DashboardNavbarRoot>
