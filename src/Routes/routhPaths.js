@@ -7,37 +7,39 @@ export const router = {
   login: '/',
   signUp: '/signup',
   verify: '/verify',
+  reset: '/reset',
   main: '/main',
   payForParking: '/ParkingPayment',
   payAnInfraction: '/InfractionPayment',
-  history: '/history'
+  history: '/history',
+  zone: '/zone'
 };
 
 export const adminRoutes = [
-  {
-    parent: {
-      title: 'Main',
-      path: router.main,
-      icon: <ArticleIcon />
-    },
-    child: []
-  },
+  // {
+  //   parent: {
+  //     title: 'Main',
+  //     path: router.main,
+  //     icon: <ArticleIcon />
+  //   },
+  //   child: []
+  // },
   {
     parent: {
       title: 'Pay for Parking',
-      path: router.payForParking,
+      path: router.main,
       icon: <ReceiptIcon />
     },
     child: []
   },
-  {
-    parent: {
-      title: 'Pay an Infraction',
-      path: router.payAnInfraction,
-      icon: <LocalAtmIcon />
-    },
-    child: []
-  },
+  // {
+  //   parent: {
+  //     title: 'Pay an Infraction',
+  //     path: router.payAnInfraction,
+  //     icon: <LocalAtmIcon />
+  //   },
+  //   child: []
+  // },
   {
     parent: {
       title: 'History',

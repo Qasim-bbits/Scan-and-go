@@ -33,6 +33,16 @@ export class AuthServices {
     return res;
   }
 
+  forgetPassword(body){
+    const res = AxiosServices.post(endpoints.auth.forgetPassword, body);    
+    return res;
+  }
+
+  changePassword(body){
+    const res = AxiosServices.post(endpoints.auth.changePassword, body);    
+    return res;
+  }
+
 }
 const authServices = new AuthServices();
 export default authServices;

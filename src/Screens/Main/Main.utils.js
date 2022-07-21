@@ -21,8 +21,8 @@ export default function MainUtils() {
   const [alertMessage, setAlertMessage] = useState('');
   const [showAlert, setShowAlert] = useState(false);
   const [severity, setSeverity] = useState('');
-  const [center,setCenter] = useState({lat: -3.745,lng: -38.523});
-  const [zoom,setZoom] = useState(12);
+  const [center,setCenter] = useState({lat: 45.35291599443195, lng: -75.5066849632779});
+  const [zoom,setZoom] = useState(10);
   const [selectedCity, setSelectedCity] = useState(null);
   const [selectedZone, setSelectedZone] = useState(null);
   const [cityPolygon, setCityPolygon] = useState([]);
@@ -37,6 +37,7 @@ export default function MainUtils() {
   const [inputPlateField, setInputPlateField] = useState({});
   const [btn, setBtn] = useState("Add Plate")
   const [inPolygon, setInPolygon] = useState(false);
+  const [parking, setParking] = useState({})
 
   const tarifdata = [
     {id: 0, tar_desc: 'Regular Rate', zone_id: 0},
@@ -139,11 +140,13 @@ export default function MainUtils() {
 
   const onSelectedCity = async(e)=>{
     setSelectedCity(e);
+    setShowSpinner(true);
     setCityPolygon(e.polygon);
     setCenter(getCenterOfPolygon(e.polygon))
-    setZoom(16);
+    // setZoom(1);
     const res = await mainService.getZonesById({id: e._id});
     setZones(res.data)
+    setShowSpinner(false);
   }
 
   const onSelectedZone = (e)=>{
@@ -190,6 +193,7 @@ export default function MainUtils() {
 
   const onTarifSelect = async(e)=>{
     setSteps(0);
+    setShowSpinner(true);
     const res = await mainService.getRateSteps({id: e._id, plate: selectedPlate, rate_type: e.rate_type})
     setRateCycle(res.data);
     if(res.data.length > 0){
@@ -199,6 +203,7 @@ export default function MainUtils() {
       setSeverity("error");
       setShowAlert(true);
     }
+    setShowSpinner(false);
     return;
     let rateTypeFilter = rateTypeData.filter(x=>x.tarif_id == e.id);
     setRateType(rateTypeFilter)
@@ -215,8 +220,14 @@ export default function MainUtils() {
     setSelectedPlate(e);
     setShowSpinner(true);
     const res = await mainService.getRateById({id: selectedZone._id, plate: e});
-    setTarif(res.data);
-    setDrawerComponent(0);
+    if(res.data.success != false){
+      setTarif(res.data);
+      setDrawerComponent(0);
+    }else{
+      setAlertMessage(res.data.msg);
+      setSeverity('warning');
+      setShowAlert(true);
+    }
     setShowSpinner(false);
     return;
     let time_increased = 0;
@@ -376,6 +387,15 @@ export default function MainUtils() {
     confirmZone();
   }
 
+  const emailReciept = async()=>{
+    setShowSpinner(true);
+    const res = await mainService.emailReciept({parking_id : parking._id});
+    setAlertMessage(res.data.msg);
+    setSeverity(res.data.status);
+    setShowAlert(true);
+    setShowSpinner(false);
+  }
+
   return (
     <>
       <MainView
@@ -432,19 +452,27 @@ export default function MainUtils() {
             plate = {selectedPlate}
             zone = {selectedZone._id}
             city = {selectedCity._id}
+            center = {center}
+            tarif = {tarif}
 
             setDrawerOpen={toggleDrawer} 
             handleChange = {(e)=>handleChange(e)}
             back = {()=>setDrawerComponent(0)}
             showReciept = {()=>setDrawerComponent(4)}
+            setParking = {(e)=>setParking(e)}
           />}
         </Elements>
         {drawerComponent === 4 && <Receipt 
             steps = {steps}
             rateCycle = {rateCycle}
             plate = {selectedPlate}
-
-            setDrawerOpen={toggleDrawer}
+            zone = {selectedZone}
+            city = {selectedCity}
+            tarif = {tarif}
+            parking = {parking}
+            
+            setDrawerOpen = {toggleDrawer}
+            emailReciept = {()=>emailReciept()}
             back = {()=>setDrawer(false)}
           />}
       </Drawer>

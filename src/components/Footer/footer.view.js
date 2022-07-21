@@ -7,7 +7,7 @@ export const FooterView = () => {
         color="text.secondary"
         align="center"
       >
-        © 2022 Visual Tab. Powered By Ventra Cloud. All Rights Reserved
+        © 2022 Connected Parking
       </Typography>
     );
 };

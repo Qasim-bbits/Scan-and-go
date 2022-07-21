@@ -14,6 +14,7 @@ function LoginUtils() {
   const [showAlert, setShowAlert] = useState(false);
   const [severity, setSeverity] = useState('');
   const [inputField, setInputField] = useState({});
+  const [resetPassword, setResetPassword] = useState(false);
 
   const handleChange = (e)=> {
     setInputField({...inputField, [e.target.name] : e.target.value});
@@ -23,6 +24,27 @@ function LoginUtils() {
     e.preventDefault();
     setShowSpinner(true);
     const res = await authServices.login(inputField);
+    console.log(res.data);
+    if(res.data.auth){
+      if(res.data.result.forget_password){
+        setResetPassword(true);
+        setShowSpinner(false);
+        return;
+      }
+      sessionStorage.setItem('userLogged', JSON.stringify(res.data));
+      navigate(router.main);
+    }else{
+      setAlertMessage(res.data.msg);
+      setSeverity('error');
+      setShowAlert(true);
+    }
+    setShowSpinner(false);
+  }
+
+  const handleChangePassword = async(e)=> {
+    e.preventDefault();
+    setShowSpinner(true);
+    const res = await authServices.changePassword(inputField);
     console.log(res.data);
     if(res.data.auth){
       sessionStorage.setItem('userLogged', JSON.stringify(res.data));
@@ -39,9 +61,12 @@ function LoginUtils() {
     <>
       <LoginView
         inputField = {inputField}
+        resetPassword = {resetPassword}
         
         handleChange = {(e)=>handleChange(e)}
         handleSubmit = {(e)=>handleSubmit(e)}
+        handleChangePassword = {(e)=>handleChangePassword(e)}
+        setResetPassword = {()=>setResetPassword(true)}
       />
       <SnackAlert
         alertMessage = {alertMessage}

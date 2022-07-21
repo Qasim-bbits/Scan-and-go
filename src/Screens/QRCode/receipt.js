@@ -30,7 +30,7 @@ console.log(props)
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'flex-start',
-      width: smDown ? '100%' : 600,
+      width: '100%',
       backgroundColor: '#fff',
       // height: '100%'
     }}>
@@ -38,7 +38,7 @@ console.log(props)
         <IconButton
           color="inherit"
           edge="end"
-          onClick={props.back}
+          onClick={()=>window.location.reload()}
         >
           <ArrowBackIcon />
         </IconButton>
@@ -99,7 +99,7 @@ console.log(props)
         <Typography variant='subtitle1' align='left' sx={{color: 'primary.main'}} >
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <img src={Location} width={'40px'}/>
-            {props.zone.zone_name}, {props.city.city_name}
+            {props.zone.zone_name}, {props.zone.city_id.city_name}
           </Box>
         </Typography>
       </Box>
@@ -139,13 +139,13 @@ console.log(props)
         </Typography>
         <Typography variant='subtitle1' align='left' sx={{color: 'primary.main'}} >
           <Box sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
-            {props.rateCycle[props.steps].total/100} $
+            {(props.rateCycle[props.steps].total/100).toFixed(2)} $
           </Box>
         </Typography>
       </Box>
-      <Button size='small' variant='contained' onClick={props.emailReciept}>
+      {/* <Button size='small' variant='contained' onClick={props.emailReciept}>
         Send by email
-      </Button>
+      </Button> */}
       <Box sx={{width: '100%'}}>
         <Box sx={{ fontWeight: 'bold', textTransform: 'uppercase', display: 'flex', alignItems: 'center' }}>
           <img src={ReceiptBottom} width={'100%'}/>

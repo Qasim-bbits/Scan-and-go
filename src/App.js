@@ -7,18 +7,19 @@ import LoginUtils from './Screens/Auth/Login/login.utils';
 import MainUtils from './Screens/Main/Main.utils';
 import SignupUtils from './Screens/Auth/SignUp/signUp.utils';
 import VerifyUtils from './Screens/Auth/Verify/verify.utils';
+import QRCodeUtils from './Screens/QRCode/QRCode.utils';
+import ForgetPasswordUtils from './Screens/Auth/ForgetPassword/ForgetPassword.utils';
+import Receipt from './Screens/Main/receipt';
 
 const App = () => {
-  // const PrivateRoute = ({ children}) => {
-  //   const isAdmin = JSON.parse(sessionStorage.getItem('userLogged'));
-  //   if(isAdmin !== null){
-  //     if (isAdmin.user_type === 'admin' ) {
-  //       return children
-  //     } 
-  //   }
+  const PrivateRoute = ({ children}) => {
+    const user = JSON.parse(sessionStorage.getItem('userLogged'));
+    if(user !== null){
+      return children
+    }
       
-  //   return <Navigate to={router.admin} />
-  // }
+    return <Navigate to={router.login} />
+  }
   function MissingRoute() {
     return <Navigate to={{pathname: router.main}} />
   }
@@ -27,9 +28,16 @@ const App = () => {
     <Routes>
         <Route exact path={router.login} element={<LoginUtils/>}/>
         <Route exact path={router.signUp} element={<SignupUtils/>}/>
+        <Route exact path={router.reset} element={<ForgetPasswordUtils/>}/>
         <Route exact path={router.verify+'/:token'} element={<VerifyUtils/>}/>
-        <Route exact path={router.main} element={<MainUtils/>}/>
-        {/* <Route path="*" element={<MissingRoute/>} /> */}
+        <Route exact path={'reciept'} element={<Receipt/>}/>
+        <Route exact path={router.main} element={
+          <PrivateRoute>
+            <MainUtils/>
+          </PrivateRoute>}
+        />
+        <Route exact path={router.zone+'/:id'} element={<QRCodeUtils/>}/>
+        <Route path="*" element={<MissingRoute/>} />
     </Routes>
   );
 }

@@ -30,7 +30,7 @@ export const Layout = (props) => {
             width: '100%',
             height: '100%',
             minHeight: '90vh',
-            backgroundColor: '#efefef',
+            // backgroundColor: '#efefef',
             paddingTop: 3,
           }}
         >

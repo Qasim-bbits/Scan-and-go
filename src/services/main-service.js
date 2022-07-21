@@ -38,8 +38,23 @@ export class MainService {
     return res;
   }
 
+  getQRRateById(body){
+    const res = AxiosServices.post(endpoints.main.getQRRateById, body);
+    return res;
+  }
+
   getRateSteps(body){
     const res = AxiosServices.post(endpoints.main.getRateSteps, body);
+    return res;
+  }
+
+  getZonebyId(body){
+    const res = AxiosServices.post(endpoints.main.getZonebyId, body);
+    return res;
+  }
+
+  emailReciept(body){
+    const res = AxiosServices.post(endpoints.main.emailReciept, body);
     return res;
   }
 

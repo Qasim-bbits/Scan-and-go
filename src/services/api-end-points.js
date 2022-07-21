@@ -21,6 +21,8 @@ export const endpoints = {
       verify : config.url.API_URL + 'verify',
       adminLogin : config.url.API_URL + 'adminLogin',
       editPassword : config.url.API_URL + 'editPassword',
+      forgetPassword : config.url.API_URL + 'forgetPassword',
+      changePassword : config.url.API_URL + 'changePassword',
   },
 
   ///---Home service--///
@@ -34,6 +36,9 @@ export const endpoints = {
       editPlate : config.url.API_URL + 'editPlate',
       getRateById : config.url.API_URL + 'getRateById',
       getRateSteps : config.url.API_URL + 'getRateSteps',
+      getZonebyId : config.url.API_URL + 'getZonebyId',
+      getQRRateById : config.url.API_URL + 'getQRRateById',
+      emailReciept : config.url.API_URL + 'emailReciept',
   },
 
   ///---Category service--///

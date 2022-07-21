@@ -51,7 +51,7 @@ function LoginView(props) {
         <Grid align='center'>
           <Avatar src={Logo} sx={{ width: '60%', height: '70%', marginTop: '10%' }} variant='square' />
         </Grid>
-        <form onSubmit={props.handleSubmit}>
+        {!props.resetPassword && <form onSubmit={props.handleSubmit}>
           <Box
             sx={{'& .MuiTextField-root': { m: 1, width: '35ch' }, display: 'flex', flexDirection: 'column', alignItems: 'center'}}
             noValidate
@@ -99,7 +99,7 @@ function LoginView(props) {
                 label="Remember me"
               />
               <Typography variant='body2'>
-                <Link to={{pathname: router.signUp}}>
+                <Link to={{pathname: router.reset}}>
                   Forgot password ?
                 </Link>
               </Typography>
@@ -117,7 +117,47 @@ function LoginView(props) {
             </Typography>
             <Box sx={{ m: 2 }} />
           </Box>
-        </form>
+        </form>}
+        {props.resetPassword && <form onSubmit={props.handleChangePassword}>
+          <Box
+            sx={{'& .MuiTextField-root': { m: 1, width: '35ch' }, display: 'flex', flexDirection: 'column', alignItems: 'center'}}
+            noValidate
+            autoComplete="off"
+          >
+            <TextField
+              id="standard-error-helper-text"
+              label="New Password"
+              variant="standard"
+              type="password"
+              name="new_password"
+              value={props.inputField['new_password']}
+              onChange={props.handleChange}
+              required
+            />
+            <Grid sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              width: '78%',
+              marginTop: '5%'
+            }}>
+              <Button
+                type="submit"
+                color='primary'
+                variant="contained"
+                style={btnstyle}
+              >
+                Update Password
+              </Button>
+            </Grid>
+            <Typography fontSize='13px'>
+              Already a member? <Link to={{pathname: router.login}}> Login</Link>
+            </Typography>
+            <Box sx={{ m: 2 }} />
+          </Box>
+        </form>}
         </ResponsiveCard>
       </Grid>
     </Box>

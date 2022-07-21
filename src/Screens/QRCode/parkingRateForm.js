@@ -37,29 +37,10 @@ function ParkingRateForm(props) {
   const [severity, setSeverity] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [paymentRequest, setPaymentRequest] = useState(null);
-  const {
-    setDrawerOpen,
-  } = props
 
-  const parkingRateButton = {
-    backgroundColor: '#f0f2f5',
-    margin: 5,
-    color: '#2c3680',
-  }
-  const smDown = useMediaQuery((theme) => theme.breakpoints.down('sm'), {
-    defaultMatches: true,
-    noSsr: false
-  });
   
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handlePopoverOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-  };
 
   useEffect(() => {
     if (stripe && props.rateCycle[props.steps].rate > 0) {
@@ -85,15 +66,16 @@ function ParkingRateForm(props) {
         console.log(ev)
         let body = {
           paymentMethod : ev.paymentMethod.id,
-          amount : (props.rateCycle[props.steps].total/100).toFixed(2),
+          amount : (props.rateCycle[props.steps].rate/100).toFixed(2),
           plate: props.plate,
-          user: props.user.result._id,
+          // user: '',
           zone: props.zone,
           city: props.city,
           from: props.rateCycle[props.steps].current_time,
           to: props.rateCycle[props.steps].time_desc,
-          rate: props.tarif[0]._id,
+          // token: ev.token.id
           coord: props.center,
+          rate: props.tarif[0]._id
         }
         ev.complete('success');
         const res = await parkingService.buyParking(body);
@@ -116,9 +98,9 @@ function ParkingRateForm(props) {
     if(props.rateCycle[props.steps].rate == 0){
       let body = {
         paymentMethod: '',
-        amount: (props.rateCycle[props.steps].total/100).toFixed(2),
+        amount: (props.rateCycle[props.steps].rate/100).toFixed(2),
         plate: props.plate,
-        user: props.user.result._id,
+        // user: '',
         zone: props.zone,
         city: props.city,
         from: props.rateCycle[props.steps].current_time,
@@ -146,9 +128,9 @@ function ParkingRateForm(props) {
         try{
             let body = {
               paymentMethod : paymentMethod,
-              amount : (props.rateCycle[props.steps].total/100).toFixed(2),
+              amount : (props.rateCycle[props.steps].rate/100).toFixed(2),
               plate: props.plate,
-              user: props.user.result._id,
+              // user: '',
               zone: props.zone,
               city: props.city,
               from: props.rateCycle[props.steps].current_time,
@@ -161,8 +143,8 @@ function ParkingRateForm(props) {
               props.showReciept();
               props.setParking(res.data)
             }else{
-              setAlertMessage(res.data.message);
-              setSeverity('error');
+              setAlertMessage('Parking purchased');
+              setSeverity('success');
               setShowAlert(true);
             }
         }catch(error){
@@ -184,7 +166,7 @@ function ParkingRateForm(props) {
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'flex-start',
-      width: smDown ? '100vw' : 600,
+      width: '100%',
       backgroundColor: '#fff',
       height: '100%'
     }}>
@@ -252,7 +234,7 @@ function ParkingRateForm(props) {
         </Typography>
       </Box>
       <Box sx={{width: '80%', textAlign: 'center', position: 'relative'}}>
-        <Box sx={{position: 'absolute', left: '41%', top: '40%'}} >
+        <Box sx={{position: 'absolute', left: '45%', top: '40%'}} >
           <Typography variant='subtitle1' align='left' sx={{color: 'primary.main', textAlign: 'center'}} >
             {props.rateCycle[props.steps].time_diff}
           </Typography>
@@ -268,7 +250,7 @@ function ParkingRateForm(props) {
           size={280}
         />
       </Box>
-      <Box sx={{width:'80%',bottom: '25px', position: 'absolute'}}>
+      <Box sx={{width:'63%',bottom: '25px', position: 'absolute'}}>
         {props.rateCycle[props.steps].rate != 0 && paymentRequest && <PaymentRequestButtonElement options={{paymentRequest}} />}
         <form onSubmit={purchaseParking} style={{width:'100%',marginTop: '16px'}}>
             {props.rateCycle[props.steps].rate != 0 && <CardElement options={CARD_OPTIONS}/>}

@@ -1,5 +1,5 @@
 import React from 'react';
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import logo from "../../assets/images/Logos/logo.svg";
 import {
   Avatar,
@@ -10,9 +10,10 @@ import {
   ListItemText,
   useMediaQuery,
 } from '@mui/material';
-import {adminRoutes} from "../../Routes/routhPaths"
+import {adminRoutes, router} from "../../Routes/routhPaths"
 
 export const SidebarView = (props) => {
+  let navigate = useNavigate();
   const { open, onClose } = props;
 
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'), {
@@ -30,7 +31,10 @@ export const SidebarView = (props) => {
           height: '100%',
         }}
       >
-        <Box sx={{ display: 'flex', justifyContent: 'space-around', marginTop: '5%' }}>
+        <Box 
+          sx={{ display: 'flex', justifyContent: 'space-around', marginTop: '5%', cursor: 'pointer' }} 
+          onClick={()=>navigate(router.main)}
+        >
             <Avatar src={logo} variant='square' sx={{width: 220, height: 70}} />
         </Box>
         <Divider
