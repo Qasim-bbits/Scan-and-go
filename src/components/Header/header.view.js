@@ -1,6 +1,9 @@
 import styled from '@emotion/styled';
-import { AppBar, IconButton, Toolbar, Tooltip, Typography } from '@mui/material';
+import {AppBar, Button, IconButton, Toolbar, Tooltip, Typography} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { useNavigate } from 'react-router-dom';
+import { router } from '../../Routes/routhPaths';
 
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
@@ -8,7 +11,13 @@ const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
 }));
 
 export const HeaderView = (props) => {
+  let navigate = useNavigate();
   const { onSidebarOpen, ...other } = props;
+
+  const logout = () =>{
+    sessionStorage.removeItem("userLogged");
+    navigate(router.login)
+  }
 
   return (
     <>
@@ -27,12 +36,14 @@ export const HeaderView = (props) => {
           sx={{
             minHeight: 64,
             left: 20,
-            px: 2,
+            px: 4,
+            justifyContent: 'flex-end',
           }}
         >
           <IconButton
             onClick={onSidebarOpen}
             sx={{
+              position: 'none',
               display: {
                 xs: 'inline-flex',
                 lg: 'none'
@@ -41,6 +52,9 @@ export const HeaderView = (props) => {
             }}
           >
             <MenuIcon fontSize="small" />
+          </IconButton>
+          <IconButton sx={{color: '#fff', marginLeft: '85%'}} onClick={()=>logout()}>
+            <LogoutIcon />
           </IconButton>
         </Toolbar>
       </DashboardNavbarRoot>

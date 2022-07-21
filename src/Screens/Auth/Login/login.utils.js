@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { router } from '../../../Routes/routhPaths';
 import LoginView from './login.view';
@@ -16,13 +16,31 @@ function LoginUtils() {
   const [inputField, setInputField] = useState({});
   const [resetPassword, setResetPassword] = useState(false);
 
+  useEffect(()=>{
+    let creds = JSON.parse(localStorage.getItem("loginCreds"));
+    if(creds !== null){
+      setInputField(creds);
+    };
+  },[])
+
   const handleChange = (e)=> {
     setInputField({...inputField, [e.target.name] : e.target.value});
   }
 
+  const handleChecked = (e)=> {
+    setInputField({...inputField, [e.target.name] : e.target.checked});
+  }
+
   const handleSubmit = async(e)=> {
     e.preventDefault();
-    setShowSpinner(true);
+    // setShowSpinner(true);
+    console.log(inputField);
+    if(inputField['rememberMe']){
+      localStorage.setItem('loginCreds', JSON.stringify(inputField))
+    }else{
+      localStorage.removeItem('loginCreds')
+    }
+    return;
     const res = await authServices.login(inputField);
     console.log(res.data);
     if(res.data.auth){
@@ -64,6 +82,7 @@ function LoginUtils() {
         resetPassword = {resetPassword}
         
         handleChange = {(e)=>handleChange(e)}
+        handleChecked = {(e)=>handleChecked(e)}
         handleSubmit = {(e)=>handleSubmit(e)}
         handleChangePassword = {(e)=>handleChangePassword(e)}
         setResetPassword = {()=>setResetPassword(true)}

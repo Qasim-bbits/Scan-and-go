@@ -1,6 +1,7 @@
 import { Typography } from '@mui/material';
 
 export const FooterView = () => {
+
     return (
       <Typography
         variant="body2"

@@ -14,13 +14,13 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import Logo from "../../../assets/images/Logos/logo.svg";
+import Logo from "../../../assets/images/Logos/logo.png";
 import Alert from "../../../Common/Alerts";
 import ResponsiveCard from "../../ResponsiveCard";
 import { router } from '../../../Routes/routhPaths';
 
 function LoginView(props) {
-
+console.log(props.inputField)
   const btnstyle={margin:'8% 0', width: '100%', borderRadius: 20, backgroundColor: '#2c3680'}
 
   return (
@@ -91,9 +91,11 @@ function LoginView(props) {
               <FormControlLabel
                 control={
                   <Checkbox
-                    name="checkedB"
+                    name="rememberMe"
                     color="primary"
                     size="small"
+                    checked={props.inputField['rememberMe']}
+                    onChange={props.handleChecked}
                   />
                 }
                 label="Remember me"

@@ -161,7 +161,7 @@ function ParkingRateForm(props) {
               props.showReciept();
               props.setParking(res.data)
             }else{
-              setAlertMessage(res.data.message);
+              setAlertMessage(res.data.message.code);
               setSeverity('error');
               setShowAlert(true);
             }
@@ -268,7 +268,7 @@ function ParkingRateForm(props) {
           size={280}
         />
       </Box>
-      <Box sx={{width:'80%',bottom: '25px', position: 'absolute'}}>
+      <Box sx={{width:'80%'}}>
         {props.rateCycle[props.steps].rate != 0 && paymentRequest && <PaymentRequestButtonElement options={{paymentRequest}} />}
         <form onSubmit={purchaseParking} style={{width:'100%',marginTop: '16px'}}>
             {props.rateCycle[props.steps].rate != 0 && <CardElement options={CARD_OPTIONS}/>}
@@ -276,7 +276,7 @@ function ParkingRateForm(props) {
               type='submit'
               size='large'
               variant='contained'
-              sx={{borderRadius: 8, width: '100%',marginTop: 2}}
+              sx={{borderRadius: 8, width: '100%',my: 2}}
             >
               ${(props.rateCycle[props.steps].total/100).toFixed(2)}
             </Button>

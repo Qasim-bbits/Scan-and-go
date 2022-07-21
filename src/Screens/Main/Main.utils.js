@@ -418,6 +418,7 @@ export default function MainUtils() {
         open={drawer}
         onClose={toggleDrawer}
         anchor='right'
+        sx={{background: '#fff'}}
       >
         {drawerComponent === 0 && <SelectTariff 
           tarif = {tarif}

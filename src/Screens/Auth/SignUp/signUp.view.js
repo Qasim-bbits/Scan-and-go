@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import {countries} from "./signUp.utils";
 import Alert from "../../../Common/Alerts";
-import Logo from "../../../assets/images/Logos/logo.svg";
+import Logo from "../../../assets/images/Logos/logo.png";
 import ResponsiveCard from "../../ResponsiveCard";
 import { router } from '../../../Routes/routhPaths';
 
