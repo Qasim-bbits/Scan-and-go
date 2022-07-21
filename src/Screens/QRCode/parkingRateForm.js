@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import Box from "@mui/material/Box";
-import {Button, Divider, IconButton, Popover, Typography, useMediaQuery} from "@mui/material";
+import { styled } from '@mui/material/styles';
+import {Box, Button, Divider, IconButton, Popover, Typography, Chip} from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import LocalParkingIcon from '@mui/icons-material/LocalParking';
 import InfoIcon from '@mui/icons-material/Info';
@@ -11,6 +11,14 @@ import {PaymentRequestButtonElement, useStripe, CardElement, useElements} from '
 import parkingService from '../../services/parking-service';
 import Spinner from '../../Common/Spinner';
 import SnackAlert from '../../Common/Alerts';
+
+const Root = styled('div')(({ theme }) => ({
+  width: '100%',
+  ...theme.typography.body2,
+  '& > :not(style) + :not(style)': {
+    marginTop: theme.spacing(2),
+  },
+}));
 
 const CARD_OPTIONS = {
   style: {
@@ -37,10 +45,6 @@ function ParkingRateForm(props) {
   const [severity, setSeverity] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const [paymentRequest, setPaymentRequest] = useState(null);
-
-  
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
 
   useEffect(() => {
     if (stripe && props.rateCycle[props.steps].rate > 0) {
@@ -159,7 +163,6 @@ function ParkingRateForm(props) {
     setSpinner(false);
   }
 
-  const open = Boolean(anchorEl);
   return (
     <Box sx={{
       display: 'flex',
@@ -251,9 +254,30 @@ function ParkingRateForm(props) {
         />
       </Box>
       <Box sx={{width:'63%'}}>
-        {props.rateCycle[props.steps].rate != 0 && paymentRequest && <PaymentRequestButtonElement options={{paymentRequest}} />}
+        {props.rateCycle[props.steps].rate != 0 && paymentRequest && 
+        <>
+          <PaymentRequestButtonElement options={{paymentRequest}} />
+          <Root>
+            <Divider>
+              <Chip label="OR" sx={{background: '#1e255930', color: '#2c3680', fontWeight: 'bold'}}/>
+            </Divider>
+          </Root>
+        </>
+        }
         <form onSubmit={purchaseParking} style={{width:'100%',marginTop: '16px'}}>
-            {props.rateCycle[props.steps].rate != 0 && <CardElement options={CARD_OPTIONS}/>}
+            {props.rateCycle[props.steps].rate != 0 && 
+            <>
+            <CardElement options={CARD_OPTIONS}/>
+              <Button 
+                type='submit'
+                size='large'
+                variant='contained'
+                sx={{borderRadius: 8, width: '100%',my: 2}}
+              >
+                ${(props.rateCycle[props.steps].total/100).toFixed(2)}
+              </Button>
+            </>}
+            {props.rateCycle[props.steps].rate == 0 && 
             <Button 
               type='submit'
               size='large'
@@ -261,7 +285,7 @@ function ParkingRateForm(props) {
               sx={{borderRadius: 8, width: '100%',my: 2}}
             >
               ${(props.rateCycle[props.steps].total/100).toFixed(2)}
-            </Button>
+            </Button>}
         </form>
       </Box>
       <Spinner

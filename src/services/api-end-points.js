@@ -39,6 +39,7 @@ export const endpoints = {
       getZonebyId : config.url.API_URL + 'getZonebyId',
       getQRRateById : config.url.API_URL + 'getQRRateById',
       emailReciept : config.url.API_URL + 'emailReciept',
+      getUserHistory : config.url.API_URL + 'getUserHistory',
   },
 
   ///---Category service--///

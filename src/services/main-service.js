@@ -58,6 +58,11 @@ export class MainService {
     return res;
   }
 
+  getUserHistory(body){
+    const res = AxiosServices.post(endpoints.main.getUserHistory, body);
+    return res;
+  }
+
 }
 const mainService = new MainService();
 export default mainService;

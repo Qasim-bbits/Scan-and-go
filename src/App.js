@@ -9,7 +9,7 @@ import SignupUtils from './Screens/Auth/SignUp/signUp.utils';
 import VerifyUtils from './Screens/Auth/Verify/verify.utils';
 import QRCodeUtils from './Screens/QRCode/QRCode.utils';
 import ForgetPasswordUtils from './Screens/Auth/ForgetPassword/ForgetPassword.utils';
-import Receipt from './Screens/Main/receipt';
+import HistoryUtils from './Screens/History/History.utils';
 
 const App = () => {
   const PrivateRoute = ({ children}) => {
@@ -30,7 +30,11 @@ const App = () => {
         <Route exact path={router.signUp} element={<SignupUtils/>}/>
         <Route exact path={router.reset} element={<ForgetPasswordUtils/>}/>
         <Route exact path={router.verify+'/:token'} element={<VerifyUtils/>}/>
-        <Route exact path={'reciept'} element={<Receipt/>}/>
+        <Route exact path={router.history} element={
+          <PrivateRoute>
+            <HistoryUtils/>
+          </PrivateRoute>}
+        />
         <Route exact path={router.main} element={
           <PrivateRoute>
             <MainUtils/>

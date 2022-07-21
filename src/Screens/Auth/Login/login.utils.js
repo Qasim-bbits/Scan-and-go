@@ -33,21 +33,18 @@ function LoginUtils() {
 
   const handleSubmit = async(e)=> {
     e.preventDefault();
-    // setShowSpinner(true);
-    console.log(inputField);
-    if(inputField['rememberMe']){
-      localStorage.setItem('loginCreds', JSON.stringify(inputField))
-    }else{
-      localStorage.removeItem('loginCreds')
-    }
-    return;
+    setShowSpinner(true);
     const res = await authServices.login(inputField);
-    console.log(res.data);
     if(res.data.auth){
       if(res.data.result.forget_password){
         setResetPassword(true);
         setShowSpinner(false);
         return;
+      }
+      if(inputField['rememberMe']){
+        localStorage.setItem('loginCreds', JSON.stringify(inputField))
+      }else{
+        localStorage.removeItem('loginCreds')
       }
       sessionStorage.setItem('userLogged', JSON.stringify(res.data));
       navigate(router.main);
