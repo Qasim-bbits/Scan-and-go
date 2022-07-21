@@ -79,7 +79,8 @@ function ParkingRateForm(props) {
           to: props.rateCycle[props.steps].time_desc,
           // token: ev.token.id
           coord: props.center,
-          rate: props.tarif[0]._id
+          rate: props.tarif[0]._id,
+          service_fee: props.rateCycle[props.steps].service_fee,
         }
         ev.complete('success');
         const res = await parkingService.buyParking(body);
@@ -110,7 +111,8 @@ function ParkingRateForm(props) {
         from: props.rateCycle[props.steps].current_time,
         to: props.rateCycle[props.steps].time_desc,
         coord: props.center,
-        rate: props.tarif[0]._id
+        rate: props.tarif[0]._id,
+        service_fee: props.rateCycle[props.steps].service_fee,
       }
       const res = await parkingService.buyParking(body);
       setSpinner(false);
@@ -140,6 +142,7 @@ function ParkingRateForm(props) {
               from: props.rateCycle[props.steps].current_time,
               to: props.rateCycle[props.steps].time_desc,
               coord: props.center,
+              service_fee: props.rateCycle[props.steps].service_fee,
               rate: props.tarif[0]._id
             }
             const res = await parkingService.buyParking(body);

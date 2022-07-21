@@ -2,8 +2,12 @@ import React, {useState, useEffect} from 'react';
 import Box from "@mui/material/Box";
 import {Button, Divider, IconButton, Popover, Typography, useMediaQuery} from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import moment from 'moment';
 import LocalParkingIcon from '@mui/icons-material/LocalParking';
 import InfoIcon from '@mui/icons-material/Info';
+import ParkIn from "../../assets/icons/park_in.png"
+import Clock from "../../assets/icons/clock.png"
+import ParkOut from "../../assets/icons/park_out.png"
 
 function HistoryView(props) {
 
@@ -39,15 +43,6 @@ function HistoryView(props) {
       backgroundColor: '#fff',
       height: '100%'
     }}>
-      <Box sx={{display: 'flex', backgroundColor: '#14a7e0', width: '100%'}}>
-        <IconButton
-          color="inherit"
-          edge="end"
-          onClick={props.back}
-        >
-          <ArrowBackIcon />
-        </IconButton>
-      </Box>
       <Box sx={{display: 'flex', width: '80%', justifyContent: 'space-between', alignItems: 'flex-end', color: 'black'}}>
         <Typography variant='h5' align='left' sx={{marginTop: 5, color: 'primary.main'}} >
           <IconButton
@@ -62,20 +57,35 @@ function HistoryView(props) {
       <Box sx={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', marginTop: '2%', padding: '0 8% 0 8%', width: '80%'}}>
         {props.history.map(x=>{
           return(
-            <Button variant='contained' onClick={()=>props.onTarifSelect(x)} style={parkingRateButton} fullWidth sx={{justifyContent: 'flex-start'}}>
-              <IconButton
-                onMouseEnter={handlePopoverOpen}
-                onMouseLeave={handlePopoverClose}
-              >
-                <InfoIcon />
-              </IconButton>
-              rate_name
+            <Button variant='contained' onClick={()=>props.onListSelect(x)} style={parkingRateButton} fullWidth sx={{justifyContent: 'flex-start'}}>
+                <Box sx={{display: 'flex', width: '100%', marginTop: 1, justifyContent: 'space-between', alignItems: 'flex-end', color: 'black'}}>
+                    <Typography variant='caption' align='left' sx={{color: 'primary.main', textAlign: 'center'}} >
+                        <img src={ParkIn} width={'50px'}/>
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            {moment(x.from).format('ll')}
+                        </Box>
+                        <Box sx={{ fontWeight: 'bold', textTransform: 'uppercase', display: 'flex', alignItems: 'center', placeContent: 'center' }}>
+                            {moment(x.from).format('hh:mm a')}
+                        </Box>
+                    </Typography>
+                    <Typography variant='caption' align='left' sx={{color: 'primary.main'}} >
+                        <Box sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
+                            <img src={Clock} width={'80px'}/>
+                        </Box>
+                    </Typography>
+                    <Typography variant='caption' align='left' sx={{color: 'primary.main', textAlign: 'center'}} >
+                        <img src={ParkOut} width={'50px'}/>
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            {moment(x.to).format('ll')}
+                        </Box>
+                        <Box sx={{ fontWeight: 'bold', textTransform: 'uppercase', display: 'flex', alignItems: 'center', placeContent: 'center' }}>
+                            {moment(x.to).format('hh:mm a')}
+                        </Box>
+                    </Typography>
+                </Box>
             </Button>
           )
         })}
-            <Button variant='contained' onClick={()=>props.onListSelect('a')} style={parkingRateButton} fullWidth sx={{justifyContent: 'flex-start'}}>
-              rate_name
-            </Button>
       </Box>
     </Box>
   );

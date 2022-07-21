@@ -126,6 +126,12 @@ console.log(props)
         <Typography variant='subtitle1' align='left' sx={{color: 'primary.main'}} >
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <img src={Percentage} width={'40px'}/>
+            Service Fee
+          </Box>
+        </Typography>
+        <Typography variant='subtitle1' align='left' sx={{color: 'primary.main'}} >
+          <Box>
+            {(props.rateCycle[props.steps].service_fee/100).toFixed(2)} $
           </Box>
         </Typography>
       </Box>

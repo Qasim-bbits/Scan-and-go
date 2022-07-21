@@ -100,6 +100,7 @@ function ParkingRateForm(props) {
           city: props.city,
           from: props.rateCycle[props.steps].current_time,
           to: props.rateCycle[props.steps].time_desc,
+          service_fee: props.rateCycle[props.steps].service_fee,
           rate: props.tarif[0]._id,
           coord: props.center,
         }
@@ -131,6 +132,7 @@ function ParkingRateForm(props) {
         city: props.city,
         from: props.rateCycle[props.steps].current_time,
         to: props.rateCycle[props.steps].time_desc,
+        service_fee: props.rateCycle[props.steps].service_fee,
         coord: props.center,
         rate: props.tarif[0]._id
       }
@@ -161,6 +163,7 @@ function ParkingRateForm(props) {
               city: props.city,
               from: props.rateCycle[props.steps].current_time,
               to: props.rateCycle[props.steps].time_desc,
+              service_fee: props.rateCycle[props.steps].service_fee,
               coord: props.center,
               rate: props.tarif[0]._id
             }
