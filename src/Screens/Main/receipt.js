@@ -18,7 +18,7 @@ import Rate from "../../assets/icons/rate.png"
 
 
 function Receipt(props) {
-console.log(props)
+
   const smDown = useMediaQuery((theme) => theme.breakpoints.down('sm'), {
     defaultMatches: true,
     noSsr: false
@@ -44,13 +44,13 @@ console.log(props)
         </IconButton>
       </Box>
       <Box sx={{display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center', color: 'black'}}>
-        <Typography variant='subtitle1' align='left' sx={{color: 'primary.main'}} >
-          <Box sx={{ fontWeight: 'bold', textTransform: 'uppercase', display: 'flex', alignItems: 'center' }}>
-            <img src={ReceiptTop} width={'35%'}/>
+        <Typography variant='subtitle1' align='left' sx={{color: 'primary.main', width: '30%'}} >
+          <Box sx={{ fontWeight: 'bold', textTransform: 'uppercase', display: 'flex', alignItems: 'center'}}>
+            <img src={ReceiptTop} width={'100%'}/>
           </Box>
         </Typography>
-        <Typography variant='h6' align='right' sx={{color: 'primary.main'}} >
-          <Box sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
+        <Typography variant='h6' align='right' sx={{color: 'primary.main', width: '70%'}} >
+          <Box sx={{ fontWeight: 'bold', textTransform: 'uppercase', mx:2}}>
             Parking Receipt
           </Box>
         </Typography>
@@ -129,7 +129,7 @@ console.log(props)
             Service Fee
           </Box>
         </Typography>
-        <Typography variant='subtitle1' align='left' sx={{color: 'primary.main'}} >
+        <Typography variant='subtitle1' align='left' sx={{color: 'primary.main', alignSelf: 'center'}} >
           <Box>
             {(props.rateCycle[props.steps].service_fee/100).toFixed(2)} $
           </Box>
@@ -143,7 +143,7 @@ console.log(props)
             Amount Paid
           </Box>
         </Typography>
-        <Typography variant='subtitle1' align='left' sx={{color: 'primary.main'}} >
+        <Typography variant='subtitle1' align='left' sx={{color: 'primary.main', alignSelf: 'center'}} >
           <Box sx={{ fontWeight: 'bold', textTransform: 'uppercase' }}>
             {props.rateCycle[props.steps].total/100} $
           </Box>

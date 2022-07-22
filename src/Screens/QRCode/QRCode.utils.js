@@ -11,10 +11,12 @@ import SnackAlert from '../../Common/Alerts';
 import Spinner from '../../Common/Spinner';
 import Receipt from './receipt';
 import { Layout } from '../../components/SidebarHeaderWrapper';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { router } from '../../Routes/routhPaths';
 
 const stripePromise = loadStripe('pk_test_51JDF8yFMPgCzegFZyQVzPTBid8gLHHR1j67hjQM1sLSmbYBONnQ12xgq3Oz8DeRuezJYM1qds3IuQh7EZsw8r1wq00ms9dzlAA')
 export default function QRCodeUtils() {
+  let navigate = useNavigate();
   let {id} = useParams();
   const [showSpinner, setShowSpinner] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
@@ -30,7 +32,7 @@ export default function QRCodeUtils() {
   const [btn, setBtn] = useState("Add Plate")
   const [parking, setParking] = useState({})
   const [tarif, setTarif] = useState([])
-
+  const [stepData, setStepData] = useState([]);
 
   useEffect(()=>{
     getZonebyId();
@@ -40,6 +42,9 @@ export default function QRCodeUtils() {
   const getZonebyId = async()=>{
     const res = await mainService.getZonebyId({id: id});
     setZones(res.data)
+    if(res.data.length == 0){
+      navigate(router.login)
+    }
   }
 
   const confirmZone=async()=>{
@@ -59,6 +64,10 @@ export default function QRCodeUtils() {
     const res = await mainService.getRateSteps({id: e._id, plate: selectedPlate, rate_type: e.rate_type, qr_code: e.qr_code})
     setRateCycle(res.data);
     if(res.data.length > 0){
+      var data = res.data.map(function(item) {
+        return (item['total']/100);
+      });
+      setStepData(data)
       setDrawerComponent(3);
     }else{
       setAlertMessage(res.data.msg);
@@ -102,7 +111,7 @@ export default function QRCodeUtils() {
   }
 
   const handlePlateChange = (e) =>{
-    setInputPlateField({...inputPlateField, [e.target.name] : e.target.value})
+    setInputPlateField({...inputPlateField, [e.target.name] : e.target.value.toUpperCase()})
   }
 
   const handlePlateSubmit = async(e) =>{
@@ -111,16 +120,16 @@ export default function QRCodeUtils() {
     if(btn == "Add Plate"){
       let plate = JSON.parse(localStorage.getItem('plates'));
       if(plate !== null){
-        plate.push(inputPlateField['plate'])
+        plate.push(inputPlateField['plate'].toUpperCase())
         localStorage.setItem('plates', JSON.stringify(plate));
       }else{
         plate = [];
-        plate.push(inputPlateField['plate'])
+        plate.push(inputPlateField['plate'].toUpperCase())
         localStorage.setItem('plates', JSON.stringify(plate));
       }
     }else{
       let plate = JSON.parse(localStorage.getItem('plates'));
-      plate[inputPlateField.id] = inputPlateField.plate
+      plate[inputPlateField.id] = inputPlateField.plate.toUpperCase()
       localStorage.setItem('plates', JSON.stringify(plate));
     }
     setShowSpinner(false);
@@ -159,6 +168,7 @@ export default function QRCodeUtils() {
             zone = {zones[0]._id}
             city = {zones[0].city_id}
             tarif = {tarif}
+            stepData = {stepData}
 
             handleChange = {(e)=>handleChange(e)}
             back = {()=>setDrawerComponent(0)}

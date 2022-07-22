@@ -33,6 +33,7 @@ export default function MainUtils() {
   const [cities, setCities] = useState([]);
   const [steps, setSteps] = useState(0);
   const [rateCycle, setRateCycle] = useState([]);
+  const [stepData, setStepData] = useState([]);
   const [zones, setZones] = useState([]);
   const [inputPlateField, setInputPlateField] = useState({});
   const [btn, setBtn] = useState("Add Plate")
@@ -151,7 +152,6 @@ export default function MainUtils() {
 
   const onSelectedZone = (e)=>{
     setSelectedZone(e);
-    console.log(getCenterOfPolygon(e.polygon));
     setCenter(getCenterOfPolygon(e.polygon))
     setZoom(20);
     setTarif(tarifdata.filter(x=>x.zone_id == e.id))
@@ -197,6 +197,10 @@ export default function MainUtils() {
     const res = await mainService.getRateSteps({id: e._id, plate: selectedPlate, rate_type: e.rate_type})
     setRateCycle(res.data);
     if(res.data.length > 0){
+      var data = res.data.map(function(item) {
+        return (item['total']/100);
+      });
+      setStepData(data)
       setDrawerComponent(3);
     }else{
       setAlertMessage(res.data.msg);
@@ -370,7 +374,7 @@ export default function MainUtils() {
   }
 
   const handlePlateChange = (e) =>{
-    setInputPlateField({...inputPlateField, [e.target.name] : e.target.value})
+    setInputPlateField({...inputPlateField, [e.target.name] : e.target.value.toUpperCase()})
   }
 
   const handlePlateSubmit = async(e) =>{
@@ -383,7 +387,7 @@ export default function MainUtils() {
     }else{
       await mainService.editPlate(inputPlateField);
     }
-    setShowSpinner(false);
+    // setShowSpinner(false);
     confirmZone();
   }
 
@@ -455,6 +459,7 @@ export default function MainUtils() {
             city = {selectedCity._id}
             center = {center}
             tarif = {tarif}
+            stepData = {stepData}
 
             setDrawerOpen={toggleDrawer} 
             handleChange = {(e)=>handleChange(e)}

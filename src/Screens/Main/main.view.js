@@ -100,6 +100,7 @@ export default function MainView(props) {
                 freeSolo
                 id="free-solo-2-demo"
                 disableClearable
+                blurOnSelect
                 options={props.cities}
                 getOptionLabel={(option) => option.city_name}
                 value={props.selectedCity}
@@ -122,6 +123,7 @@ export default function MainView(props) {
                 freeSolo
                 id="free-solo-2-demo"
                 disableClearable
+                blurOnSelect
                 options={props.zones}
                 getOptionLabel={(option) => option.zone_name}
                 value={props.selectedZone}
@@ -141,7 +143,7 @@ export default function MainView(props) {
                 )}
               />
             </Box>
-            <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', height: '65%'}}>
+            <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center',position: 'absolute', bottom: '16px', width: '100%'}}>
               {<Button size='large' variant='contained' style={btnStyle} onClick={props.confirmZone}>
                 <Typography sx={{fontSize: smDown ? 'small' : 'large'}}>
                   Confirm Your Zone

@@ -14,7 +14,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import Logo from "../../../assets/images/Logos/logo.png";
+import logo from "../../../assets/images/Logos/logo.svg";
 import Alert from "../../../Common/Alerts";
 import ResponsiveCard from "../../ResponsiveCard";
 import { router } from '../../../Routes/routhPaths';
@@ -48,8 +48,8 @@ console.log(props.inputField)
           alertMessage={alertMessage}
           closeAlert={()=>setShowAlert(false)}
         /> */}
-        <Grid align='center'>
-          <Avatar src={Logo} sx={{ width: '60%', height: '70%', marginTop: '10%' }} variant='square' />
+        <Grid align='center' sx={{mt:5, mb: 4}}>
+          <Avatar src={logo} variant='square' sx={{width: 220, height: 70}} />
         </Grid>
         {!props.resetPassword && <form onSubmit={props.handleSubmit}>
           <Box
@@ -134,6 +134,10 @@ console.log(props.inputField)
               name="new_password"
               value={props.inputField['new_password']}
               onChange={props.handleChange}
+              inputProps={{ 
+                pattern: "[a-zA-Z0-9]{6,12}",
+                title: "Only numbers and alphabets are allowed"
+              }}
               required
             />
             <Grid sx={{
@@ -155,7 +159,7 @@ console.log(props.inputField)
               </Button>
             </Grid>
             <Typography fontSize='13px'>
-              Already a member? <Link to={{pathname: router.login}}> Login</Link>
+              Don't have an account? <Link to={{pathname: router.signUp}}> Sign Up</Link>
             </Typography>
             <Box sx={{ m: 2 }} />
           </Box>

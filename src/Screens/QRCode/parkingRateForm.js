@@ -4,7 +4,7 @@ import {Box, Button, Divider, IconButton, Popover, Typography, Chip} from "@mui/
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import LocalParkingIcon from '@mui/icons-material/LocalParking';
 import InfoIcon from '@mui/icons-material/Info';
-// import CircularSlider from '@fseehawer/react-circular-slider';
+import CircularSlider from '@fseehawer/react-circular-slider';
 import { CircleSlider } from "react-circle-slider";
 import moment from 'moment';
 import {PaymentRequestButtonElement, useStripe, CardElement, useElements} from '@stripe/react-stripe-js';
@@ -52,8 +52,8 @@ function ParkingRateForm(props) {
         country: 'US',
         currency: 'usd',
         total: {
-          label: 'Demo total',
-          amount: props.rateCycle[props.steps].rate,
+          label: 'Connected Parking',
+          amount: props.rateCycle[props.steps].total,
         },
         requestPayerName: true,
         requestPayerEmail: true,
@@ -67,10 +67,10 @@ function ParkingRateForm(props) {
       });
 
       pr.on('paymentmethod', async  (ev) => {
-        console.log(ev)
+        setSpinner(false);
         let body = {
-          paymentMethod : ev.paymentMethod.id,
-          amount : (props.rateCycle[props.steps].rate/100).toFixed(2),
+          paymentMethod : ev.paymentMethod,
+          amount : (props.rateCycle[props.steps].total/100).toFixed(2),
           plate: props.plate,
           // user: '',
           zone: props.zone,
@@ -95,7 +95,21 @@ function ParkingRateForm(props) {
         }
       })
     }
-  }, [stripe]);
+  }, [stripe, props.rateCycle[props.steps]]);
+
+  const updateAmount = ()=>{
+    paymentRequest.update({
+      total: {
+        label: 'Connected Parking',
+        amount: props.rateCycle[props.steps].total,
+      },
+    });
+  }
+
+  const handleWheelChange = (value)=>{
+    props.handleChange(value);
+    updateAmount();
+  }
 
   const purchaseParking= async (e)=>{
     e.preventDefault();
@@ -103,7 +117,7 @@ function ParkingRateForm(props) {
     if(props.rateCycle[props.steps].rate == 0){
       let body = {
         paymentMethod: '',
-        amount: (props.rateCycle[props.steps].rate/100).toFixed(2),
+        amount: (props.rateCycle[props.steps].total/100).toFixed(2),
         plate: props.plate,
         // user: '',
         zone: props.zone,
@@ -134,7 +148,7 @@ function ParkingRateForm(props) {
         try{
             let body = {
               paymentMethod : paymentMethod,
-              amount : (props.rateCycle[props.steps].rate/100).toFixed(2),
+              amount : (props.rateCycle[props.steps].total/100).toFixed(2),
               plate: props.plate,
               // user: '',
               zone: props.zone,
@@ -174,7 +188,7 @@ function ParkingRateForm(props) {
       justifyContent: 'flex-start',
       width: '100%',
       backgroundColor: '#fff',
-      height: '100%'
+      // height: '100%'
     }}>
       <Box sx={{display: 'flex', backgroundColor: '#14a7e0', width: '100%'}}>
         <IconButton
@@ -239,29 +253,47 @@ function ParkingRateForm(props) {
           CA${(props.rateCycle[props.steps].service_fee/100).toFixed(2)}
         </Typography>
       </Box>
-      <Box sx={{width: '80%', textAlign: 'center', position: 'relative'}}>
-        <Box sx={{position: 'absolute', left: '45%', top: '40%'}} >
+      <Box sx={{width: '80%', textAlign: 'center', position: 'relative', my: 2}}>
+        {/* <Box sx={{position: 'absolute', left: '41%', top: '40%'}} >
           <Typography variant='subtitle1' align='left' sx={{color: 'primary.main', textAlign: 'center'}} >
             {props.rateCycle[props.steps].time_diff}
           </Typography>
           <Typography variant='h6' align='left' sx={{color: 'primary.main', textAlign: 'center'}} >
             CA${(props.rateCycle[props.steps].total/100).toFixed(2)}
           </Typography>
-        </Box>
-        <CircleSlider 
+        </Box> */}
+        {/* <CircleSlider 
           value={props.steps} 
           min={0} 
           max={props.rateCycle.length-1} 
-          onChange={props.handleChange} 
+          onChange={handleWheelChange} 
           size={280}
+        /> */}
+        <CircularSlider
+            label={props.rateCycle[props.steps].time_diff}
+            labelSize
+            labelColor="#2c3680"
+            knobColor="#2c3680"
+            progressColorFrom="#14a7e0"
+            progressColorTo="#2c3680de"
+            progressSize={26}
+            valueFontSize={'3rem'}
+            trackColor="#eeeeee"
+            trackSize={24}
+            knobSize={72}
+            labelBottom={true}
+            prependToValue="$"
+            data={props.stepData}
+            dataIndex={1}
+            onChange={ value => { console.log(value); } }
         />
       </Box>
-      <Box sx={{width:'63%'}}>
+      <Box sx={{width:'63%', my: 1}}>
         {props.rateCycle[props.steps].rate != 0 && paymentRequest && 
         <>
           <PaymentRequestButtonElement options={{paymentRequest}} />
           <Root>
-            <Divider>
+            <Divider sx={{mt:2}}>
               <Chip label="OR" sx={{background: '#1e255930', color: '#2c3680', fontWeight: 'bold'}}/>
             </Divider>
           </Root>

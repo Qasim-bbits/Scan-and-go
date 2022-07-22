@@ -36,7 +36,7 @@ function SelectPlateForm(props) {
       alignItems: 'center',
       justifyContent: 'flex-start',
       width: smDown ? '100vw' : 600,
-      backgroundColor: '#fff',
+      background: '#fff',
       height: '100%'
     }}>
       <Box sx={{display: 'flex', backgroundColor: '#14a7e0', width: '100%'}}>
@@ -62,7 +62,7 @@ function SelectPlateForm(props) {
           Add Plate
         </Button>
       </Box>
-      <Box sx={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' ,marginTop: '10%', padding: '0 1% 0 1%',width: '100%'}}>
+      <Box sx={{width: '100%', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' ,marginTop: '10%', padding: '0 1% 0 1%'}}>
         {props.plates.map((x) => (
           <Paper elevation={1} sx={{display: 'flex', height: 120, width: '80%', backgroundColor:'#f0f2f5', marginBottom: '5px'}}>
             <ListItem>

@@ -17,7 +17,7 @@ const LayoutRoot = styled('div')(({ theme }) => ({
 
 export const Layout = (props) => {
   const { children } = props;
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   const smDown = useMediaQuery((theme) => theme.breakpoints.down('sm'), {
     defaultMatches: true,

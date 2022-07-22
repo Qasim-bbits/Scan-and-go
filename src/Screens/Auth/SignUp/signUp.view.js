@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import {countries} from "./signUp.utils";
 import Alert from "../../../Common/Alerts";
-import Logo from "../../../assets/images/Logos/logo.png";
+import logo from "../../../assets/images/Logos/logo.svg";
 import ResponsiveCard from "../../ResponsiveCard";
 import { router } from '../../../Routes/routhPaths';
 
@@ -40,7 +40,7 @@ function SignUpView(props) {
 
   return (
     <Box
-      sx={{backgroundColor: '#f0f2f5', height:'100vh', width: '100%'}}
+      sx={{backgroundColor: '#f0f2f5', height:'100%', width: '100%'}}
     >
       <Grid sx={{paddingTop: 5}}>
         <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginLeft: 40}}>
@@ -66,8 +66,8 @@ function SignUpView(props) {
             alertMessage={alertMessage}
             closeAlert={()=>setShowAlert(false)}
           />
-          <Grid align='center'>
-            <Avatar src={Logo} sx={{ width: '60%', height: '70%', marginTop: '10%' }} variant='square' />
+          <Grid align='center' sx={{mt:5, mb: 4}}>
+            <Avatar src={logo} variant='square' sx={{width: 220, height: 70}} />
           </Grid>
         <form onSubmit={props.handleSubmit}>
           <Box
@@ -106,7 +106,6 @@ function SignUpView(props) {
               name="address"
               value={props.inputField['address']}
               onChange={props.handleChange}
-              required
             />
             <TextField
               id="standard-error-helper-text"
@@ -117,7 +116,6 @@ function SignUpView(props) {
               name="mobile_no"
               value={props.inputField['mobile_no']}
               onChange={props.handleChange}
-              required
             />
             <TextField
               id="standard-error-helper-text"
@@ -140,37 +138,12 @@ function SignUpView(props) {
               variant="standard"
               onChange={props.handleChange}
               value={props.inputField['password']}
+              inputProps={{ 
+                pattern: "[a-zA-Z0-9]{6,12}",
+                title: "Only numbers and alphabets are allowed"
+              }}
               required
             />
-          {/* <Autocomplete
-            id="country-select-demo"
-            options={countries}
-            autoHighlight
-            getOptionLabel={(option) => option.label}
-            renderOption={(props, option) => (
-              <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-                <img
-                  loading="lazy"
-                  width="20"
-                  src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-                  srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-                  alt=""
-                />
-                {option.label} ({option.code}) +{option.phone}
-              </Box>
-              )}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  variant="standard"
-                  label="Where will you use ConnectedGOC?"
-                  required
-                  inputProps={{
-                    ...params.inputProps,
-                  }}
-                />
-              )}
-            /> */}
             <Grid sx={{
               display: 'flex',
               flexDirection: 'row',

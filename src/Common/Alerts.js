@@ -22,7 +22,7 @@ export default function SnackAlert(props) {
           horizontal: 'center',
         }}
         open={showAlert}
-        // autoHideDuration={6000}
+        autoHideDuration={6000}
         onClose={closeAlert}
         sx={{whiteSpace: 'pre-wrap', maxHeight:"100%", overflow: 'auto', top:'0 !important'}}
       >

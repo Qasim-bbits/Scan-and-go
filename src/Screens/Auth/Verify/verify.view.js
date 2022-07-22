@@ -1,59 +1,66 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import {
-  Avatar,
   Box,
-  Button,
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
   Typography,
+  Divider,
+  useMediaQuery,
+  Paper
 } from "@mui/material";
-import Logo from "../../../assets/images/Logos/logo.png";
-import ResponsiveCard from "../../ResponsiveCard";
+import ReceiptTop from "../../../assets/images/Backgrounds/receipt_top.png"
+import ReceiptBottom from "../../../assets/images/Backgrounds/receipt_bottom.png"
 import { router } from '../../../Routes/routhPaths';
 
 function VerifyView(props) {
 
-  const btnstyle={margin:'8% 0', width: '100%', borderRadius: 20, backgroundColor: '#2c3680'}
+  const smDown = useMediaQuery((theme) => theme.breakpoints.down('sm'), {
+    defaultMatches: true,
+    noSsr: false
+  });
 
   return (
-    <Box
-      sx={{backgroundColor: '#f0f2f5', height:'100vh', width: '100%'}}
-    >
-      <Grid sx={{paddingTop: 5}}>
-        <ResponsiveCard>
-          <Grid align='center'>
-            <Avatar src={Logo} sx={{ width: '60%', height: '70%', marginTop: '10%' }} variant='square' />
-          </Grid>
-          <Box
-            sx={{'& .MuiTextField-root': { m: 1, width: '35ch' }, display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2}}
-            noValidate
-            autoComplete="off"
-          >
-            <Grid sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              flexWrap: 'wrap',
-              width: '78%',
-            }}>
-              <Typography variant='body2'>
-                {props.alertMessage}
-              </Typography>
-            </Grid>
-            <Typography fontSize='13px'>
-              Don't have an account? <Link to={{pathname: router.signUp}}> Sign Up</Link>
-            </Typography>
+    <Box sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      width:'100%',
+      backgroundColor: '#eee',
+      height: '100vh',
+      placeContent: 'center'
+    }}>
+      <Paper sx={{width: "50%", textAlign: 'center'}} elevation={2}>
+        <Box sx={{display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center', color: 'black'}}>
+          <Typography variant='subtitle1' align='left' sx={{color: 'primary.main'}} >
+            <Box sx={{ fontWeight: 'bold', textTransform: 'uppercase', display: 'flex', alignItems: 'center' }}>
+              <img src={ReceiptTop} width={'35%'}/>
+            </Box>
+          </Typography>
+          {props.verified && <Typography variant='h6' align='right' sx={{color: 'primary.main'}} >
+            <Box sx={{ fontWeight: 'bold', textTransform: 'uppercase', p: 2}}>
+              Account Verified
+            </Box>
+          </Typography>}
+          {!props.verified && <Typography variant='h6' align='right' sx={{color: '#ed0000'}} >
+            <Box sx={{ fontWeight: 'bold', textTransform: 'uppercase', p: 2 }}>
+              Account Not Verified
+            </Box>
+          </Typography>}
+        </Box>
+        <Typography variant='subtitle1' align='center' >
+          {props.verified && <Box sx={{ display: 'flex', alignItems: 'center', placeContent: 'center' }}>
+            Your account has been verified. Please&nbsp;<Link to={{pathname: router.login}}>Login</Link>&nbsp;to continue
+          </Box>}
+          {!props.verified && <Box sx={{ display: 'flex', alignItems: 'center', placeContent: 'center' }}>
+            Token has been Expired. Please&nbsp;<Link to={{pathname: router.signUp}}>register</Link>&nbsp;again to continue
+          </Box>}
+        </Typography>
+        <Box sx={{width: '100%'}}>
+          <Box sx={{ fontWeight: 'bold', textTransform: 'uppercase', display: 'flex', alignItems: 'center' }}>
+            <img src={ReceiptBottom} width={'100%'}/>
           </Box>
-        </ResponsiveCard>
-      </Grid>
+        </Box>
+      </Paper>
     </Box>
   );
 }
