@@ -8,6 +8,11 @@ export class ParkingService {
     return res;
   }
 
+  getParkings(body){
+    const res = AxiosServices.post(endpoints.parking.getParkings, body);
+    return res;
+  }
+
 }
 const parkingService = new ParkingService();
 export default parkingService;

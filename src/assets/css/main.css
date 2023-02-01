@@ -1,0 +1,116 @@
+/* width
+::-webkit-scrollbar {
+    width: 7px;
+  }
+  
+
+  /* Track */
+::-webkit-scrollbar-track {
+  background: white;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #3f3d3d;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #0a0a0a;
+}
+/* .MuiBackdrop-root{
+    z-index: 9999 !important;
+} */
+.main-container {
+  width: 100%;
+  height: 100vh;
+}
+.row {
+  width: 100% !important;
+  margin: 0 !important;
+}
+.display-contents {
+  display: contents;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+.float-left {
+  float: left;
+}
+.fit-content {
+  width: fit-content !important;
+}
+.font-bold {
+  font-weight: bold !important;
+}
+
+.edit-btn {
+  background-color: green !important;
+  color: white !important;
+}
+
+.edit-btn:hover {
+  background-color: rgb(2, 101, 2) !important;
+}
+
+.delete-btn {
+  background-color: rgb(228, 4, 4) !important;
+  color: white !important;
+}
+
+.delete-btn:hover {
+  background-color: rgb(196, 3, 3) !important;
+  color: white !important;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  border: 0.5px solid lightgray;
+  border-radius: 15px;
+  padding: 3px;
+  width: "400px";
+  color: black;
+}
+
+.search input {
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
+.drawer-input-width {
+  border: 1px solid black;
+}
+
+.drawer-icon-visiblity {
+  visibility: hidden;
+}
+
+code{
+  color: #2c3680 !important;
+}
+
+@media (max-width: 768px) {
+  .drawer-input-width {
+    width: 100% !important;
+  }
+  .drawer-icon-visiblity {
+    visibility: visible;
+    margin: 15px 10px 10px 270px;
+  }
+  .admin-text {
+    font-size: 15px !important;
+  }
+
+  .card-text-resp {
+    margin-left: 300px;
+  }
+
+  .paperResp {
+    height: 100vh;
+    width: 100%;
+  }
+}

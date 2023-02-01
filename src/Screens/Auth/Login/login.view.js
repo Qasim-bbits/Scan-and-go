@@ -13,15 +13,17 @@ import {
   Select,
   TextField,
   Typography,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
 import logo from "../../../assets/images/Logos/logo.svg";
-import Alert from "../../../Common/Alerts";
-import ResponsiveCard from "../../ResponsiveCard";
+import ResponsiveCard from "../../User/ResponsiveCard";
 import { router } from '../../../Routes/routhPaths';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 function LoginView(props) {
-console.log(props.inputField)
   const btnstyle={margin:'8% 0', width: '100%', borderRadius: 20, backgroundColor: '#2c3680'}
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <Box
@@ -35,6 +37,9 @@ console.log(props.inputField)
               labelId="demo-simple-select-standard-label"
               id="demo-simple-select-standard"
               label="Language"
+              name={'language'}
+              value={props.inputField['language']}
+              onChange={props.handleChange}
             >
               <MenuItem value={'en'}>English</MenuItem>
               <MenuItem value={'fr'}>Français</MenuItem>
@@ -42,12 +47,6 @@ console.log(props.inputField)
           </FormControl>
         </Box>
         <ResponsiveCard>
-        {/* <Alert
-          showAlert={showAlert}
-          severity={severity}
-          alertMessage={alertMessage}
-          closeAlert={()=>setShowAlert(false)}
-        /> */}
         <Grid align='center' sx={{mt:5, mb: 4}}>
           <Avatar src={logo} variant='square' sx={{width: 220, height: 70}} />
         </Grid>
@@ -60,7 +59,6 @@ console.log(props.inputField)
                 <TextField
                   id="standard-error-helper-text"
                   label="Email Address"
-                  // helperText="Incorrect entry."
                   variant="standard"
                   type="email"
                   name="email"
@@ -71,12 +69,24 @@ console.log(props.inputField)
                 <TextField
                   id="standard-password-input"
                   label="Password"
-                  type="password"
+                  type={(showPassword) ? 'text':'password'}
                   name="password"
                   autoComplete="current-password"
                   variant="standard"
                   value={props.inputField['password']}
                   onChange={props.handleChange}
+                  InputProps={{ 
+                    // pattern: "[a-zA-Z0-9]{6,12}",
+                    // title: "Only numbers and alphabets are allowed",
+                    endAdornment: <InputAdornment position="end">
+                        <IconButton
+                            onClick={()=>setShowPassword(!showPassword)}
+                            edge="end"
+                        >
+                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                    </InputAdornment>
+                  }}
                   required
                 />
             <Grid sx={{
@@ -130,13 +140,21 @@ console.log(props.inputField)
               id="standard-error-helper-text"
               label="New Password"
               variant="standard"
-              type="password"
+              type={(showPassword) ? 'text':'password'}
               name="new_password"
               value={props.inputField['new_password']}
               onChange={props.handleChange}
-              inputProps={{ 
-                pattern: "[a-zA-Z0-9]{6,12}",
-                title: "Only numbers and alphabets are allowed"
+              InputProps={{ 
+                // pattern: "[a-zA-Z0-9]{6,12}",
+                // title: "Only numbers and alphabets are allowed",
+                endAdornment: <InputAdornment position="end">
+                    <IconButton
+                        onClick={()=>setShowPassword(!showPassword)}
+                        edge="end"
+                    >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                </InputAdornment>
               }}
               required
             />

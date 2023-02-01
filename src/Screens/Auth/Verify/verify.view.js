@@ -1,68 +1,105 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import {
-  Box,
-  Typography,
-  Divider,
-  useMediaQuery,
-  Paper
-} from "@mui/material";
-import ReceiptTop from "../../../assets/images/Backgrounds/receipt_top.png"
-import ReceiptBottom from "../../../assets/images/Backgrounds/receipt_bottom.png"
-import { router } from '../../../Routes/routhPaths';
+import React from "react";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import bgimg from "../../../assets/icons/tick.png";
+import goclogo from "../../../assets/images/Backgrounds/receipt_top.png";
+import tick from "../../../assets/icons/blue_tick.png";
+import wave from "../../../assets/images/Backgrounds/receipt_bottom.png";
+import { router } from "../../../Routes/routhPaths";
+import { useNavigate } from "react-router-dom";
 
-function VerifyView(props) {
+const styles = {
+  paperContainer: {
+    backgroundImage: `url(${bgimg})`,
+    backgroundPosition: "50% 40%",
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "300px",
+  },
+};
 
-  const smDown = useMediaQuery((theme) => theme.breakpoints.down('sm'), {
-    defaultMatches: true,
-    noSsr: false
-  });
-
+const Verified = () => {
+  let navigate = useNavigate();
   return (
-    <Box sx={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'flex-start',
-      width:'100%',
-      backgroundColor: '#eee',
-      height: '100vh',
-      placeContent: 'center'
-    }}>
-      <Paper sx={{width: "50%", textAlign: 'center'}} elevation={2}>
-        <Box sx={{display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center', color: 'black'}}>
-          <Typography variant='subtitle1' align='left' sx={{color: 'primary.main'}} >
-            <Box sx={{ fontWeight: 'bold', textTransform: 'uppercase', display: 'flex', alignItems: 'center' }}>
-              <img src={ReceiptTop} width={'35%'}/>
-            </Box>
-          </Typography>
-          {props.verified && <Typography variant='h6' align='right' sx={{color: 'primary.main'}} >
-            <Box sx={{ fontWeight: 'bold', textTransform: 'uppercase', p: 2}}>
-              Account Verified
-            </Box>
-          </Typography>}
-          {!props.verified && <Typography variant='h6' align='right' sx={{color: '#ed0000'}} >
-            <Box sx={{ fontWeight: 'bold', textTransform: 'uppercase', p: 2 }}>
-              Account Not Verified
-            </Box>
-          </Typography>}
-        </Box>
-        <Typography variant='subtitle1' align='center' >
-          {props.verified && <Box sx={{ display: 'flex', alignItems: 'center', placeContent: 'center' }}>
-            Your account has been verified. Please&nbsp;<Link to={{pathname: router.login}}>Login</Link>&nbsp;to continue
-          </Box>}
-          {!props.verified && <Box sx={{ display: 'flex', alignItems: 'center', placeContent: 'center' }}>
-            Token has been Expired. Please&nbsp;<Link to={{pathname: router.signUp}}>register</Link>&nbsp;again to continue
-          </Box>}
-        </Typography>
-        <Box sx={{width: '100%'}}>
-          <Box sx={{ fontWeight: 'bold', textTransform: 'uppercase', display: 'flex', alignItems: 'center' }}>
-            <img src={ReceiptBottom} width={'100%'}/>
-          </Box>
-        </Box>
-      </Paper>
-    </Box>
+    <div>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          margin: "0 auto",
+          overflow: "hidden",
+          "& > :not(style)": {
+            m: 1,
+            width:
+              window.innerWidth > 700 ? "600px !important" : "100vw !important",
+            height:
+              window.innerWidth > 700 ? "700px !important" : "94vh !important",
+          },
+        }}
+      >
+        <Paper
+          elevation={2}
+          style={styles.paperContainer}
+          sx={{
+            width:
+              window.innerWidth > 700 ? "50% !important" : "100% !important",
+            position: "relative",
+          }}
+        >
+          <img src={goclogo} alt="logo" style={{ width: "200px" }} />
+          <div
+            style={{
+              textAlign: "center",
+              height: "auto",
+            }}
+          >
+            <img src={tick} alt="" style={{ width: "60px" }} />
+            <h3
+              style={{
+                margin: "0px",
+                color: "#042e6d",
+              }}
+            >
+              YOUR ACCOUNT HAS BEEN{" "}
+              <span style={{ color: "green" }}>VERIFIED</span>
+            </h3>
+            <p
+              style={{
+                margin: window.innerWidth > 700 ? "25px 130px" : "25px 30px",
+                lineHeight: "1.5",
+                color: "#042e6d",
+                fontWeight: "bold",
+                fontSize: "15px",
+              }}
+            >
+              CONGRATULATION! YOUR NEW ACCOUNT HAS BEEN{" "}
+              <span style={{ color: "green" }}>VERIFIED</span> SUCCESSFULLY
+            </p>
+          </div>
+          <h3
+            style={{
+              margin: "0px",
+              color: "#042e6d",
+              textAlign: "center",
+            }}
+          >
+            PLEASE <span style={{ color: "green", cursor:'pointer'}} onClick={()=>navigate(router.login)}>
+              SIGN IN 
+              </span> TO
+            CONTINUE
+          </h3>
+          <img
+            src={wave}
+            alt="wave"
+            style={{
+              width: "100%",
+              position:'absolute',
+              bottom: 0
+            }}
+          />
+        </Paper>
+      </Box>
+    </div>
   );
-}
+};
 
-export default VerifyView;
+export default Verified;

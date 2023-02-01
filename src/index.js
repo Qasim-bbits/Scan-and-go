@@ -3,6 +3,8 @@ import { BrowserRouter } from 'react-router-dom'
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 import { createTheme , ThemeProvider } from "@mui/material/styles";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./assets/css/main.css";
 import App from './App';
 
 const theme = createTheme({

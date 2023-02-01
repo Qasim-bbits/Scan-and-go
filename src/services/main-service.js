@@ -63,6 +63,31 @@ export class MainService {
     return res;
   }
 
+  getZones(){
+    const res = AxiosServices.get(endpoints.main.getZones);    
+    return res;
+  }
+
+  getUserProfile(body){
+    const res = AxiosServices.post(endpoints.main.getUserProfile,body);
+    return res;
+  }
+
+  editProfile(body){
+    const res = AxiosServices.post(endpoints.main.editProfile,body);
+    return res;
+  }
+
+  getCurrentParking(body){
+    const res = AxiosServices.post(endpoints.main.getCurrentParking,body);
+    return res;
+  }
+
+  getCurrentParkingsByPlate(body){
+    const res = AxiosServices.post(endpoints.main.getCurrentParkingsByPlate,body);
+    return res;
+  }
+
 }
 const mainService = new MainService();
 export default mainService;

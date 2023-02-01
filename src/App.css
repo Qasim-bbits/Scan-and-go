@@ -1,5 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300;400;600&display=swap');
+.App {
+  text-align: center;
+  position: relative;
+}
 
+.App-map {
+  height: 100%;
+  width: 100%;
+}
+.pac-container {
+  z-index: 1351 !important;
+}
 App {
   text-align: center;
   height: 100%;
@@ -39,4 +50,9 @@ App {
   to {
     transform: rotate(360deg);
   }
+}
+
+td, tr{
+  max-width:100%;
+  white-space:nowrap;
 }

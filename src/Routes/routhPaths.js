@@ -1,7 +1,4 @@
-import ReceiptIcon from '@mui/icons-material/Receipt';
-import LocalAtmIcon from '@mui/icons-material/LocalAtm';
-import ManageSearchIcon from '@mui/icons-material/ManageSearch';
-import ArticleIcon from '@mui/icons-material/Article';
+import {Receipt, DashboardOutlined, ManageSearch, PersonOffOutlined, Person} from '@mui/icons-material';
 
 export const router = {
   login: '/',
@@ -12,23 +9,37 @@ export const router = {
   payForParking: '/ParkingPayment',
   payAnInfraction: '/InfractionPayment',
   history: '/history',
-  zone: '/zone'
+  zone: '/zone',
+  pay_ticket: '/pay_ticket',
+  suite: "/suite",
+  dashboard: "/suite/dashboard",
+  organizations: "/suite/organizations",
+  cities: "/suite/cities",
+  zones: "/suite/zones",
+  rates: "/suite/rates",
+  users: "/suite/users",
+  parkings: "/suite/parkings",
+  ticket: "/suite/ticket",
+  tickets_issued: "/suite/tickets_issued",
+  businessPlates: "/suite/business_plates",
+  visitorPlates: "/suite/visitor_pass",
+  profile: "/profile",
 };
 
 export const adminRoutes = [
-  // {
-  //   parent: {
-  //     title: 'Main',
-  //     path: router.main,
-  //     icon: <ArticleIcon />
-  //   },
-  //   child: []
-  // },
+  {
+    parent: {
+      title: 'Profile',
+      path: router.profile,
+      icon: <Person />
+    },
+    child: []
+  },
   {
     parent: {
       title: 'Pay for Parking',
       path: router.main,
-      icon: <ReceiptIcon />
+      icon: <Receipt />
     },
     child: []
   },
@@ -44,7 +55,7 @@ export const adminRoutes = [
     parent: {
       title: 'History',
       path: router.history,
-      icon: <ManageSearchIcon />
+      icon: <ManageSearch />
     },
     child: []
   },

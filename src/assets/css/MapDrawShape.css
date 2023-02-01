@@ -1,0 +1,143 @@
+.header-container {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+}
+
+.map-txtfield-mrgns {
+  margin-top: -20px;
+  margin-left: 50px;
+}
+
+.map-btn-mrgns {
+  margin-left: 100px;
+}
+
+.map-container {
+  padding: 13px;
+  height: 73vh;
+  width: 100%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
+
+.mt {
+  margin-top: 1.5vh;
+}
+
+.map-input-field:focus {
+  outline: 1px solid rgb(202, 202, 202);
+  border: 1px solid rgb(202, 202, 202);
+  box-shadow: 2px 2px 3px 1px #2c3680;
+}
+
+.controls-container {
+  position: absolute;
+  margin-top: 2rem;
+  right: 0;
+  left: 0;
+  bottom: 5%;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ml {
+  margin-left: 10vh;
+}
+
+.map-input-field {
+  width: 100%;
+  height: 40px;
+  border-radius: 4px;
+  border: 1px solid rgb(202, 202, 202);
+}
+
+.input-div {
+  margin-left: 7vh;
+}
+
+.btn-control {
+  background-color: #ffffff;
+  border: 0;
+  border-radius: 0.5rem;
+  box-sizing: border-box;
+  color: #111827;
+
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  padding: 0.75rem 1rem;
+  margin: 0.25rem;
+  text-align: center;
+  text-decoration: none #d1d5db solid;
+  text-decoration-thickness: auto;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.btn-control:hover {
+  background-color: rgb(249, 250, 251);
+}
+
+.btn-control:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.btn-control:focus-visible {
+  box-shadow: none;
+}
+
+.btn-control:disabled {
+  border-color: #dddddd;
+  color: #dddddd;
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.btn-initial-point {
+  background-color: white;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  padding: 0;
+  justify-content: center;
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.btn-delete-point {
+  background-color: white;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  padding: 0;
+  justify-content: center;
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  align-items: center !important;
+  display: inline-flex;
+}
+
+@media (max-width: 1024px) {
+  .input-div {
+    margin-left: 0;
+  }
+  .header-container {
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .map-container {
+    height: 83vh;
+  }
+}

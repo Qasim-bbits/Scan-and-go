@@ -12,13 +12,16 @@ import {
   MenuItem,
   Select,
   TextField,
-  Typography
+  Typography,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
 import {countries} from "./signUp.utils";
 import Alert from "../../../Common/Alerts";
 import logo from "../../../assets/images/Logos/logo.svg";
-import ResponsiveCard from "../../ResponsiveCard";
+import ResponsiveCard from "../../User/ResponsiveCard";
 import { router } from '../../../Routes/routhPaths';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 function SignUpView(props) {
 
@@ -27,6 +30,7 @@ function SignUpView(props) {
   const [alertMessage, setAlertMessage] = useState('');
   const [alertTitle, setAlertTitle] = useState('');
   const [showAlert, setShowAlert] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [severity, setSeverity] = useState('');
 
   const handleWrongCredentials = () => {
@@ -133,14 +137,22 @@ function SignUpView(props) {
               label="Password"
               fullWidth
               name="password"
-              type="password"
+              type={(showPassword) ? 'text':'password'}
               autoComplete="current-password"
               variant="standard"
               onChange={props.handleChange}
               value={props.inputField['password']}
-              inputProps={{ 
-                pattern: "[a-zA-Z0-9]{6,12}",
-                title: "Only numbers and alphabets are allowed"
+              InputProps={{ 
+                // pattern: /^[a-zA-Z0-9]*$/,
+                // title: "Only numbers and alphabets are allowed",
+                endAdornment: <InputAdornment position="end">
+                    <IconButton
+                        onClick={()=>setShowPassword(!showPassword)}
+                        edge="end"
+                    >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                </InputAdornment>
               }}
               required
             />

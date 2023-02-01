@@ -33,9 +33,10 @@ export const Layout = (props) => {
             flex: '1 1 auto',
             flexDirection: 'column',
             width: '100%',
-            height: smDown ? null : '90%',
-            minHeight: smDown ? null : '80vh',
-            backgroundColor: '#efefef',
+            height: smDown ? '' : '90%',
+            minHeight: smDown ? '78vh' : '78vh',
+            backgroundColor: '#fff',
+            overflow: 'auto',
             paddingTop: 3,
           }}
         >

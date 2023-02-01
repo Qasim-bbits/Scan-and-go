@@ -15,7 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 import Logo from "../../../assets/images/Logos/logo.svg";
-import ResponsiveCard from "../../ResponsiveCard";
+import ResponsiveCard from "../../User/ResponsiveCard";
 import { router } from '../../../Routes/routhPaths';
 
 function ForgetPasswordView(props) {
