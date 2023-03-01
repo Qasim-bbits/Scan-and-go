@@ -23,6 +23,7 @@ import Ticket from './Screens/Admin/Ticket/Ticket';
 import TicketIssued from './Screens/Admin/TicketIssued/TicketIssued';
 import PayTicket from './Screens/User/PayTicket/PayTicket';
 import Organizations from './Screens/Admin/Organization/Organizations';
+import Reporting from './Screens/Admin/Reporting/Reporting';
 
 const App = () => {
   const PrivateRoute = ({ children}) => {
@@ -85,6 +86,7 @@ const App = () => {
           <Route exact path={router.tickets_issued} element={<TicketIssued />} />
           <Route exact path={router.businessPlates} element={<PlatesUtils />} />
           <Route exact path={router.parkings+"/:id"} element={<ParkingsUtils />} />
+          <Route exact path={router.reporting} element={<Reporting/>} />
         </Route>
         <Route path={router.admin} element={
           <MenuBar />

@@ -23,6 +23,11 @@ export class UserServices {
     return res;
   }
 
+  getAgents(){    
+    const res = AxiosServices.get(endpoints.user.getAgents);    
+    return res;
+  }
+
 }
 const userServices = new UserServices();
 export default userServices;

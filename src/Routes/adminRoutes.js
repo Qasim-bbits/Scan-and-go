@@ -1,5 +1,5 @@
 import { 
-  DashboardOutlined, DirectionsCar, BackupTableOutlined, Public, MapOutlined, Inventory2Outlined, Business, ConfirmationNumberOutlined
+  DashboardOutlined, DirectionsCar, BackupTableOutlined, Public, ConfirmationNumberOutlined, Report
 } from "@mui/icons-material";
 import {router} from "./routhPaths";
 
@@ -58,6 +58,11 @@ const adminRoutes = [
     path: router.tickets_issued,
     icon: <ConfirmationNumberOutlined />,
     value: "Tickets Issued",
+  },
+  {
+    path: router.reporting,
+    icon: <Report />,
+    value: "Reporting",
   },
 ];
 

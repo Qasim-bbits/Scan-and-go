@@ -8,7 +8,7 @@ export const FooterView = () => {
         color="text.secondary"
         align="center"
       >
-        © 2022 Connected Parking
+        © 2023 Connected Parking
       </Typography>
     );
 };

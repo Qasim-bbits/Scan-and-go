@@ -70,6 +70,7 @@ export const endpoints = {
     delItem : config.url.API_URL + 'delItem',
     addUser : config.url.API_URL + 'addUser',
     editUser : config.url.API_URL + 'editUser',
+    getAgents : config.url.API_URL + 'getAgents',
   },
 
   ///---Plates service--///
@@ -133,6 +134,16 @@ export const endpoints = {
 
   permission : {
     getAgentPermissions : config.url.API_URL + 'getAgentPermissions',
+  },
+
+  ///---reporting service--///
+
+  reporting : {
+    getAllKeys : config.url.API_URL + 'getAllKeys',
+    generateReport : config.url.API_URL + 'generateReport',
+    exportPDF : config.url.API_URL + 'exportPDF',
+    generateTicketIssuedReport : config.url.API_URL + 'generateTicketIssuedReport',
+    exportTicketIssuedPDF : config.url.API_URL + 'exportTicketIssuedPDF',
   },
 
 }

@@ -23,6 +23,7 @@ export const router = {
   tickets_issued: "/suite/tickets_issued",
   businessPlates: "/suite/business_plates",
   visitorPlates: "/suite/visitor_pass",
+  reporting: "/suite/reporting",
   profile: "/profile",
 };
 

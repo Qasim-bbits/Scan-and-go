@@ -88,6 +88,14 @@ export default function TicketsIssuedView(props) {
       { field: 'ticket', headerName: 'Ticket Desc', valueGetter: (params) => params.row?.ticket?.ticket_name, minWidth: 600, headerClassName: 'header' },
       { field: 'plate', headerName: 'Plate', width: 150, headerClassName: 'header' },
       { field: 'issued_at', headerName: 'Issued At', valueGetter: (params) => moment(params.row.issued_at).format('MMM Do YY, hh:mm a'), width: 200, headerClassName: 'header' },
+      { field: 'amount', headerName: 'Amount Paid', valueGetter: (params) => 
+        ((params.row.amount !== undefined) ? '$ '+(params.row.amount/100).toFixed(2) : ''),
+        width: 200, headerClassName: 'header'
+      },
+      { field: 'paid_at', headerName: 'Paid At', valueGetter: (params) => 
+        (params.row.paid_at !== undefined) ? moment(params.row.paid_at).format('MMM Do YY, hh:mm a') : '',
+        width: 200, headerClassName: 'header'
+      },
       { field: 'parking_id', headerName: 'Parking Id', width: 150, headerClassName: 'header'},
       { 
         field: 'parking_status', headerName: 'Parking Status', width: 150, headerClassName: 'header',
